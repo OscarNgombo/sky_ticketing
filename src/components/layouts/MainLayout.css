@@ -1,0 +1,20 @@
+.main-layout {
+  display: grid;
+  min-height: 100vh;
+}
+
+.main-content {
+  display: flex;
+  flex-direction: column;
+}
+
+.main-content {
+  flex: 1;
+  padding: 20px;
+  width: calc(100% - 250px); /* Same as sidenav width */
+  transition: width 0.3s ease;
+}
+
+.main-layout.sidenav-collapsed .main-content {
+  width: calc(100% - 60px); /* Same as collapsed sidenav width */
+}

@@ -1,0 +1,24 @@
+.ticket-item {
+  display: flex;
+  justify-content: space-between;
+  padding: 15px;
+  border-bottom: 1px solid #E0E0E0;
+}
+
+.ticket-info {
+  display: flex;
+  align-items: center;
+}
+
+.ticket-info input {
+  margin-right: 15px;
+}
+
+.ticket-details {
+  display: flex;
+  align-items: center;
+}
+
+.ticket-details span {
+  margin-left: 20px;
+}

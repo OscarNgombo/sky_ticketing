@@ -1,0 +1,29 @@
+.footer {
+  height: 50px;
+  background-color: var(--bottom-nav-bg-color);
+  gap: 1rem;
+}
+.footer div:nth-of-type(2) {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  padding: 0px;
+  gap: 6px;
+}
+.footer div:nth-child(1) {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  padding: 0px;
+  gap: 11px;
+  margin-left: 14px;
+}
+
+.footer p {
+  text-wrap: nowrap;
+  font-weight: 500;
+  font-size: 13px;
+  line-height: 16px;
+  color: #144d5a;
+  flex: none;
+}

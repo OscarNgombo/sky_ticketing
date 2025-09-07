@@ -39,13 +39,10 @@ const Header: React.FC<HeaderProps> = ({
           <Logo />
         </div>
         <span className="header-text">{leftText}</span>
-        <Button
-          className={userType.toLowerCase()}
-          variant="primary"
-        >
-          <svg width="4" height="4">
-            <ellipse cx="2" cy="2" rx="2" ry="2" fill="black" />
-          </svg>
+        <Button className={userType.toLowerCase()}>
+          {/* <svg width="4" height="4">
+            <ellipse cx="2" cy="2" rx="2" ry="2" fill="none" />
+          </svg> */}
 
           <p>{leftButtonText}</p>
         </Button>

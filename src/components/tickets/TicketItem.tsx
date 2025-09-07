@@ -1,11 +1,12 @@
-import React from 'react';
-import './TicketItem.css';
+import React from "react";
+import "./TicketItem.css";
 
 interface TicketItemProps {
   ticket: {
     id: string;
     subject: string;
     status: string;
+    source: string;
     date: string;
   };
 }
@@ -13,14 +14,11 @@ interface TicketItemProps {
 const TicketItem: React.FC<TicketItemProps> = ({ ticket }) => {
   return (
     <div className="ticket-item">
-      <div className="ticket-info">
-        <input type="checkbox" />
-        <span>{ticket.subject}</span>
-      </div>
-      <div className="ticket-details">
-        <span>{ticket.status}</span>
-        <span>{ticket.date}</span>
-      </div>
+      <span>{ticket.id}</span>
+      <span>{ticket.subject}</span>
+      <span>{ticket.status}</span>
+      <span>{ticket.source}</span>
+      <span>{ticket.date}</span>
     </div>
   );
 };

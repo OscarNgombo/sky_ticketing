@@ -1,4 +1,40 @@
+.ticketSummary,
+.addTicketing {
+  background-color: #f4f6f9;
+  border-bottom: solid var(--border-color) 2px;
+  border-right: solid var(--border-color) 2px;
+}
+.ticketSummary p,
+.addTicketing p {
+  color: var(--primary-color);
+  padding: 1rem;
+  font-weight: 700;
+  font-style: bold;
+}
+.addTicketing {
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  align-items: center;
+}
+.addTicketing button {
+  margin: 1rem;
+  height: 40px;
+}
+.ticket-list-container {
+  background-color: #f6fbfd;
+}
+.ticketList {
+  margin: 1rem;
+  background-color: #ffffff;
+  display: flex;
+  flex-direction: column;
+}
 
-.ticket-header{
-    background-color: #E3E3E3;
+.ticketColumns span {
+  color: #495056;
+  border-color: #a6aaac;
+  border-width: 1px;
+  text-wrap: nowrap;
+  font-weight: 800;
 }

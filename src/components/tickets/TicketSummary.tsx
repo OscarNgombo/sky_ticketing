@@ -1,5 +1,5 @@
-import React from 'react';
-import './TicketSummary.css';
+import React from "react";
+import "./TicketSummary.css";
 
 const ticketSummaryData = {
   all: 10,
@@ -20,31 +20,56 @@ const TicketSummary: React.FC = () => {
       <div className="summary-list">
         <ul>
           <li>
-            <span>All</span>
+            <span className="squareContainer"></span>
+            <span className="leadText">All</span>
             <span>{ticketSummaryData.all}</span>
           </li>
           <li>
-            <span>Open</span>
+            <span
+              className="squareContainer"
+              style={{ backgroundColor: "#fd7e13" }}
+            ></span>
+            <span className="leadText">Open</span>
             <span>{ticketSummaryData.open}</span>
           </li>
           <li>
-            <span>In Progress</span>
+            <span
+              className="squareContainer"
+              style={{ backgroundColor: "#1c7ed6" }}
+            ></span>
+            <span className="leadText">In Progress</span>
             <span>{ticketSummaryData.inProgress}</span>
           </li>
           <li>
-            <span>Resolved</span>
+            <span
+              className="squareContainer"
+              style={{ backgroundColor: "#36b14d" }}
+            ></span>
+            <span className="leadText">Resolved</span>
             <span>{ticketSummaryData.resolved}</span>
           </li>
           <li>
-            <span>Closed</span>
+            <span
+              className="squareContainer"
+              style={{ backgroundColor: "#0ca577" }}
+            ></span>
+            <span className="leadText">Closed</span>
             <span>{ticketSummaryData.closed}</span>
           </li>
           <li>
-            <span>Dropped</span>
+            <span
+              className="squareContainer"
+              style={{ backgroundColor: "#ef3d3d" }}
+            ></span>
+            <span className="leadText">Dropped</span>
             <span>{ticketSummaryData.dropped}</span>
           </li>
           <li>
-            <span>On Hold</span>
+            <span
+              className="squareContainer"
+              style={{ backgroundColor: "#5b5e66" }}
+            ></span>
+            <span className="leadText">On Hold</span>
             <span>{ticketSummaryData.onHold}</span>
           </li>
         </ul>

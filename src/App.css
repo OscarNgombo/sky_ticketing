@@ -1,8 +1,6 @@
 #root {
-  max-width: 1728px;
-  max-height: 1117px;
-  min-width: 100vw;
-  min-height: 100vh;
+  height: 100vh;
+  width: 100vw;
 }
 
 /* Tickets List */

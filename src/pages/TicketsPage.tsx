@@ -1,5 +1,3 @@
-import { useNavigate } from "react-router-dom";
-import Button from "../components/buttons/Button";
 import Dropdown from "../components/inputs/Dropdown";
 import React, { useState } from "react";
 import MainLayout from "../components/layouts/MainLayout";
@@ -10,27 +8,39 @@ import {
   UserIcon,
 } from "../components/icons";
 import "./TicketsPage.css";
+import Button from "../components/buttons/Button";
 import TicketItem from "../components/tickets/TicketItem";
 import TicketSummary from "../components/tickets/TicketSummary";
+import { useNavigate } from "react-router-dom";
 
 const tickets = [
   {
     id: "1",
     subject: "My computer is not turning on",
     status: "Open",
-    date: "2025-09-06",
+    source: "Email",
+    date: "2025-09-06 12:00:00",
   },
   {
     id: "2",
     subject: "I forgot my password",
     status: "In Progress",
-    date: "2025-09-05",
+    source: "Email",
+    date: "2025-09-05 12:00:00",
   },
   {
     id: "3",
     subject: "The printer is not working",
+    source: "Email",
     status: "Closed",
-    date: "2025-09-04",
+    date: "2025-09-04 12:00:00",
+  },
+  {
+    id: "4",
+    subject: "The printer is not working",
+    source: "Help Desk System",
+    status: "Closed",
+    date: "2025-09-04 12:00:00",
   },
 ];
 
@@ -74,23 +84,25 @@ function TicketsPage() {
       userType="Vendor"
       rightItems={rightNavItems}
     >
-      <div
-        style={{
-          backgroundColor: "#E3E3E3",
-          padding: "20px",
-          display: "flex",
-          justifyContent: "space-between",
-          alignItems: "center",
-        }}
-      >
-        <h2>All Tickets</h2>
+      <div className="ticketSummary">
+        <p>All Tickets</p>
+      </div>
+      <div className="addTicketing">
+        <p>All Tickets</p>
         <Button onClick={handleCreateTicket} variant="primary">
           Add Ticket
         </Button>
       </div>
-      <div style={{ display: "flex" }}>
-        <TicketSummary />
-        <div className="ticket-list">
+      <TicketSummary />
+      <div className="ticket-list-container">
+        <div className="ticketList">
+          <div className="ticketColumns">
+            <span>Ticket ID</span>
+            <span>Ticket Subject</span>
+            <span>Ticket Status</span>
+            <span>Source</span>
+            <span>Date Created</span>
+          </div>
           {tickets.map((ticket) => (
             <TicketItem key={ticket.id} ticket={ticket} />
           ))}

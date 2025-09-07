@@ -14,8 +14,9 @@
   --body-color: #f7fcfd;
   --font-size: 16px;
   --button-font-size: 14px;
-  --secondary-button-color: #FD7E14;
-  --bottom-nav-bg-color:#E0E9EB;
+  --secondary-button-color: #fd7e14;
+  --bottom-nav-bg-color: #e0e9eb;
+  --border-color: #e2e2e2;
 }
 * {
   box-sizing: border-box;

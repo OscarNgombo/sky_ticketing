@@ -4,8 +4,7 @@
   background-color: var(--primary-color);
   justify-content: space-between;
   align-items: self-start;
-  gap: 5rem;
-  width: 260px;
+  width: 200px;
   padding: 2rem;
   transition: all 0.3s ease-in-out;
 }
@@ -13,7 +12,7 @@
 .top-actions {
   display: flex;
   flex-direction: column;
-  row-gap: 2rem;
+  row-gap: 1rem;
   align-items: self-start;
 }
 
@@ -50,7 +49,7 @@
 /* --- Collapsed State --- */
 
 .side-nav.collapsed {
-  width: 85px;
+  width: inherit;
   padding-left: 1rem;
   padding-right: 1rem;
   align-items: center;

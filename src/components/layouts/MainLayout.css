@@ -1,20 +1,22 @@
 .main-layout {
   display: grid;
   min-height: 100vh;
+  grid-template-rows: 50px auto 50px;
 }
 
 .main-content {
-  display: flex;
-  flex-direction: column;
+  display: grid;
+  grid-template-columns: 25% 75%;
+  grid-template-rows: 10% 95%;
+  gap: 0;
 }
 
 .main-content {
-  flex: 1;
-  padding: 20px;
-  width: calc(100% - 250px); /* Same as sidenav width */
   transition: width 0.3s ease;
+  background-color: #f4f6f9;
+  border-bottom: solid var(--border-color) 2px;
+  border-right: solid var(--border-color) 2px;
 }
-
-.main-layout.sidenav-collapsed .main-content {
-  width: calc(100% - 60px); /* Same as collapsed sidenav width */
+.main-layout.sidenav-collapsed {
+  grid-template-columns: 1fr auto;
 }

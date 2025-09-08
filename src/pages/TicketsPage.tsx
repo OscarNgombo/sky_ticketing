@@ -92,6 +92,7 @@ function TicketsPage() {
       value={filter}
       onChange={handleFilterChange}
       placeholder="Apstar SACCO Limited"
+      showIcon={false}
     />,
     <NotificationIcon />,
     <UserIcon />,
@@ -103,6 +104,7 @@ function TicketsPage() {
       leftButtonText="VENDOR"
       userType="Vendor"
       rightItems={rightNavItems}
+      mainContentClassName="tickets-page"
     >
       <div className="ticketSummary">
         <p>All Tickets</p>

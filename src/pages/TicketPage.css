@@ -1,0 +1,147 @@
+.ticketPageMain {
+    display: flex;
+    flex-direction: column;
+    background-color: #ffffff;
+    height: 100%;
+}
+
+.ticketPageMain > header {
+    height: 3rem;
+    background: #f5f7f9;
+    padding: 1rem;
+}
+
+.ticketPageMain > header > p {
+    font-family: "Inter", sans-serif;
+    font-style: normal;
+    font-weight: 700;
+    font-size: 16px;
+    line-height: 19px;
+    color: #135764;
+}
+
+.ticketPageMain > section {
+    display: flex;
+    flex-direction: column;
+    background: #f7fcfd;
+    border-width: 1px 1px 1px 0;
+    border-style: solid;
+    border-color: #e3e3e3;
+    flex: 1;
+    overflow-y: auto;
+}
+
+.ticketPageMain > section > div {
+    display: flex;
+    gap: 1rem;
+    padding: 1rem;
+    margin-top: auto;
+    background: #f5f7f9;
+    border-top: 1px solid #dee2e6;
+    width: 100%;
+}
+
+label {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    margin-block: 0.25rem;
+    height: 18px;
+    font-family: "Open Sans", serif;
+    font-style: normal;
+    font-weight: 600;
+    font-size: 12px;
+    line-height: 18px;
+    color: #212529;
+}
+
+.ticketPageMain form {
+    padding: 1rem 1rem;
+    flex-grow: 1;
+}
+
+.ticketPageMain form input,
+.ticketPageMain form textarea {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    height: 30px;
+    background: #ffffff;
+    border: 1px solid #ced4da;
+    border-radius: 2px;
+    color: #000000;
+    width: 75%;
+    margin-block: 0.5rem;
+    padding: 1rem;
+}
+
+.ticketPageMain form textarea {
+    margin-block: 0;
+    border-top: 0;
+    height: 230px;
+    border-radius: 0 0 2px 2px;
+    resize: none;
+}
+
+.textAreaIcons {
+    display: flex;
+    flex-direction: row;
+    justify-content: space-evenly;
+    gap: 1rem;
+    align-items: center;
+    background: white;
+    border-radius: 2px 2px 0 0;
+    padding: 12px 12px;
+    width: 75%;
+    border: 1px solid #ced4da;
+}
+
+.textAreaIcons > div {
+    display: flex;
+    flex-direction: row;
+    align-items: flex-start;
+    padding: 0 8px 0 0;
+}
+
+.textAreaIcons > div > svg {
+    display: flex;
+    flex-direction: row;
+    justify-content: flex-start;
+    align-items: center;
+    border: 1px solid #CED4DA;
+    border-radius: 4px 0 0 4px;
+    padding: 1px;
+    height: 18px;
+    width: 18px;
+}
+
+.file-upload-button {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: center;
+    padding: 1px 14px;
+    width: 97px;
+    height: 30px;
+    background: #F8F9FA;
+    border: 1px solid #ADB5BD;
+    border-radius: 4px;
+    text-wrap: nowrap;
+    margin-block: 0.5rem;
+    cursor: pointer;
+}
+
+.file-upload-button-par {
+    font-family: 'Open Sans', sans-serif;
+    font-style: italic;
+    font-weight: 400;
+    font-size: 12px;
+    line-height: 16px;
+    color: #5C5F66;
+}
+
+.uploadedFileName {
+    color: #1C7ED6;
+    font-size: 12px;
+    padding: 0.5rem;
+}

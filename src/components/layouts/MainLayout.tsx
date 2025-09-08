@@ -1,4 +1,4 @@
-import { useState } from "react";
+import React, { useState } from "react";
 import Footer from "../footer/footer";
 import Header from "../headers/Header";
 import SideNav from "../navs/side/sideNav";
@@ -10,6 +10,7 @@ interface MainLayoutProps {
   leftButtonText: string;
   userType: string;
   rightItems: React.ReactNode[];
+  mainContentClassName?: string;
 }
 
 function MainLayout({
@@ -18,6 +19,7 @@ function MainLayout({
   leftButtonText,
   userType,
   rightItems,
+  mainContentClassName,
 }: MainLayoutProps) {
   const [isSideNavCollapsed, setIsSideNavCollapsed] = useState(false);
 
@@ -25,12 +27,15 @@ function MainLayout({
     setIsSideNavCollapsed(!isSideNavCollapsed);
   };
 
+  const layoutClasses = [
+    "main-layout",
+    isSideNavCollapsed ? "sidenav-collapsed" : "",
+  ]
+    .filter(Boolean)
+    .join(" ");
+
   return (
-    <div
-      className={`main-layout ${
-        isSideNavCollapsed ? "sidenav-collapsed" : ""
-      }`}
-    >
+    <div className={layoutClasses}>
       <Header
         isSideNavCollapsed={isSideNavCollapsed}
         leftText={leftText}
@@ -42,7 +47,7 @@ function MainLayout({
         isCollapsed={isSideNavCollapsed}
         onToggleCollapse={toggleSideNav}
       />
-      <main className="main-content">{children}</main>
+      <main className={mainContentClassName}>{children}</main>
       <Footer />
     </div>
   );

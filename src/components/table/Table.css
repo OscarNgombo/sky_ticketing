@@ -1,0 +1,34 @@
+.reusable-table {
+  width: 100%;
+  border-collapse: collapse;
+  background-color: #ffffff;
+  border: 1px solid #dee2e6;
+}
+
+.reusable-table th,
+.reusable-table td {
+  padding: 1rem;
+  text-align: left;
+  border-bottom: 1px solid #dee2e6;
+  white-space: nowrap;
+}
+
+.reusable-table th {
+  font-family: "Inter";
+  font-style: normal;
+  font-weight: 700;
+  font-size: 14px;
+  line-height: 20px;
+  color: #495057;
+}
+
+.reusable-table tbody tr:hover {
+  background-color: #f6fbfd;
+}
+
+.ticket-subject-cell {
+  text-decoration: solid 2px underline #144d5a;
+  color: #134d59;
+  font-weight: 400;
+  line-height: 22px;
+}

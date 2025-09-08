@@ -1,0 +1,31 @@
+.dropdown-wrapper {
+  display: flex;
+  width: fit-content;
+  flex-direction: row;
+  align-items: flex-start;
+  border: 1px solid #ced4da;
+  border-radius: 2px;
+  margin-block: 0.5rem;
+}
+
+.dropdown-select {
+  padding-inline: 1rem;
+  font-size: 0.75rem;
+  line-height: 1.75;
+  width: 156px;
+  -webkit-appearance: none;
+  -moz-appearance: none;
+  appearance: none;
+  cursor: pointer;
+  background-color: transparent;
+  align-self: stretch;
+  font-weight: 400;
+  font-style: normal;
+  color: #ced4da;
+  border: none;
+  outline: none;
+}
+
+.dropdown-select:focus {
+  outline: none;
+}

@@ -1,0 +1,27 @@
+.ticketSummary,
+.addTicketing {
+  background-color: #f4f6f9;
+  border-bottom: solid var(--border-color) 2px;
+  border-right: solid var(--border-color) 2px;
+}
+.ticketSummary p,
+.addTicketing p {
+  color: var(--primary-color);
+  padding: 1rem;
+  font-weight: 700;
+  font-style: bold;
+}
+.addTicketing {
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  align-items: center;
+}
+.addTicketing button {
+  margin: 1rem;
+  height: 40px;
+}
+.ticket-list-container {
+  background-color: #f6fbfd;
+  margin: 1rem;
+}

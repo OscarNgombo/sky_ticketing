@@ -23,18 +23,5 @@
 }
 .ticket-list-container {
   background-color: #f6fbfd;
-}
-.ticketList {
   margin: 1rem;
-  background-color: #ffffff;
-  display: flex;
-  flex-direction: column;
-}
-
-.ticketColumns span {
-  color: #495056;
-  border-color: #a6aaac;
-  border-width: 1px;
-  text-wrap: nowrap;
-  font-weight: 800;
 }

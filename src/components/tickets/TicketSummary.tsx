@@ -14,9 +14,6 @@ const ticketSummaryData = {
 const TicketSummary: React.FC = () => {
   return (
     <div className="ticket-summary">
-      <div className="summary-header">
-        <h3>Ticket Summary</h3>
-      </div>
       <div className="summary-list">
         <ul>
           <li>

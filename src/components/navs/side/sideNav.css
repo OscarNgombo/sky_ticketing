@@ -64,3 +64,12 @@
   opacity: 0;
   width: 0;
 }
+
+/* --- Toggle button rotation --- */
+.bottom-actions .side-nav-actions svg {
+  transition: transform 0.3s ease-in-out;
+}
+
+.side-nav:not(.collapsed) .bottom-actions .side-nav-actions svg {
+  transform: rotate(180deg);
+}

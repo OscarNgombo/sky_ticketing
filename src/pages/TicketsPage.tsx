@@ -9,11 +9,19 @@ import {
 } from "../components/icons";
 import "./TicketsPage.css";
 import Button from "../components/buttons/Button";
-import TicketItem from "../components/tickets/TicketItem";
 import TicketSummary from "../components/tickets/TicketSummary";
 import { useNavigate } from "react-router-dom";
+import Table, { type Column } from "../components/table/Table";
 
-const tickets = [
+interface Ticket {
+  id: string;
+  subject: string;
+  status: string;
+  source: string;
+  date: string;
+}
+
+const tickets: Ticket[] = [
   {
     id: "1",
     subject: "My computer is not turning on",
@@ -64,6 +72,18 @@ function TicketsPage() {
     "Wetu SACCO",
   ];
 
+  const ticketColumns: Column<Ticket>[] = [
+    { header: "Ticket ID", accessor: "id" },
+    {
+      header: "Ticket Subject",
+      accessor: "subject",
+      cell: (value) => <span className="ticket-subject-cell">{value}</span>,
+    },
+    { header: "Ticket Status", accessor: "status" },
+    { header: "Source", accessor: "source" },
+    { header: "Date Created", accessor: "date" },
+  ];
+
   const rightNavItems = [
     <AddIcon />,
     <SearchIcon />,
@@ -95,18 +115,7 @@ function TicketsPage() {
       </div>
       <TicketSummary />
       <div className="ticket-list-container">
-        <div className="ticketList">
-          <div className="ticketColumns">
-            <span>Ticket ID</span>
-            <span>Ticket Subject</span>
-            <span>Ticket Status</span>
-            <span>Source</span>
-            <span>Date Created</span>
-          </div>
-          {tickets.map((ticket) => (
-            <TicketItem key={ticket.id} ticket={ticket} />
-          ))}
-        </div>
+        <Table columns={ticketColumns} data={tickets} />
       </div>
     </MainLayout>
   );

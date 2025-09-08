@@ -1,13 +1,9 @@
 .header {
-  display: flex;
   justify-content: space-between;
   align-items: center;
-  height: 50px;
-  width: 100%;
   background-color: var(--primary-color);
   box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05);
   padding-right: 2rem;
-  flex-shrink: 0;
 }
 
 .header-left,
@@ -32,13 +28,14 @@
 }
 
 .header .logo.collapsed {
-  width: 57px;
+  width: 3.3125rem;
 }
 .header-text {
   color: var(--text-secondary-color);
   font-size: var(--font-size);
   font-weight: 600;
   line-height: 19px;
+  text-wrap: nowrap;
 }
 
 .vendor {

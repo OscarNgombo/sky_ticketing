@@ -1,6 +1,6 @@
 import React from "react";
 import "./Header.css";
-import Button from "../buttons/Button";
+import Button from "../../buttons/Button";
 
 const Logo = () => (
   <svg

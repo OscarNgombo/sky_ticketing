@@ -1,6 +1,7 @@
 .ticket-summary {
   padding: 1rem;
   border-right: 2px solid var(--border-color);
+  background: #ffffff;
 }
 .summary-header {
   margin-bottom: 20px;

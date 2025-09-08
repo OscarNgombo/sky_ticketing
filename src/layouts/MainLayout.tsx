@@ -1,8 +1,8 @@
 import React, { useState } from "react";
-import Footer from "../footer/footer";
-import Header from "../headers/Header";
-import SideNav from "../navs/side/sideNav";
+import Footer from "../components/footer/footer";
+import SideNav from "../components/navs/side/sideNav";
 import "./MainLayout.css";
+import Header from "../components/navs/headers/Header";
 
 interface MainLayoutProps {
   children: React.ReactNode;

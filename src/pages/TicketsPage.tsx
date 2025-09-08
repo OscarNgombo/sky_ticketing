@@ -1,15 +1,15 @@
 import Dropdown from "../components/inputs/Dropdown";
 import React, { useState } from "react";
-import MainLayout from "../components/layouts/MainLayout";
+import MainLayout from "../layouts/MainLayout.tsx";
 import {
   AddIcon,
   SearchIcon,
   NotificationIcon,
   UserIcon,
-} from "../components/icons";
+} from "../icons/icons.tsx";
 import "./TicketsPage.css";
 import Button from "../components/buttons/Button";
-import TicketSummary from "../components/tickets/TicketSummary";
+import TicketSummary from "../components/TicketSummary.tsx";
 import { useNavigate } from "react-router-dom";
 import Table, { type Column } from "../components/table/Table";
 

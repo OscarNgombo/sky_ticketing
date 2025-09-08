@@ -1,0 +1,134 @@
+.create-ticket-form-container {
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+}
+
+.create-ticket-form {
+  padding: 1rem 1rem;
+  flex-grow: 1;
+}
+
+.create-ticket-form label {
+  margin-block: 0.25rem;
+  font-family: "Open Sans", serif;
+  font-style: normal;
+  font-weight: 600;
+  font-size: 12px;
+  line-height: 18px;
+  color: #212529;
+}
+
+.create-ticket-form input,
+.create-ticket-form textarea {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  height: 30px;
+  background: #ffffff;
+  border: 1px solid #ced4da;
+  border-radius: 2px;
+  color: #000000;
+  width: 65%;
+  margin-block: 0.5rem;
+  padding: 1rem;
+}
+
+.create-ticket-form textarea {
+  margin-block: 0;
+  border-top: 0;
+  height: 230px;
+  border-radius: 0 0 2px 2px;
+  resize: none;
+}
+
+.create-ticket-form .textAreaIcons {
+  display: flex;
+  flex-direction: row;
+  gap: 1.5rem;
+  align-items: center;
+  justify-content: space-between;
+  background: white;
+  border-radius: 2px 2px 0 0;
+  padding: 12px 12px;
+  width: 65%;
+  border: 1px solid #ced4da;
+}
+
+.create-ticket-form .textAreaIcons > div {
+  display: flex;
+  flex-direction: row;
+  align-items: flex-start;
+}
+
+.create-ticket-form .textAreaIcons > div > svg {
+  border: 1px solid #ced4da;
+  /* border-radius: 4px 0 0 4px; */
+  padding: 3px;
+  height: 28px;
+  width: 28px;
+}
+.create-ticket-form .textAreaIcons > div > svg:first-child {
+  border-radius: 4px 0 0 4px;
+}
+.create-ticket-form .textAreaIcons > div > svg:last-child {
+  border-radius: 0 4px 4px 0;
+}
+.create-ticket-form .file-upload-button {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: center;
+  padding: 1px 14px;
+  width: 97px;
+  height: 30px;
+  background: #f8f9fa;
+  border: 1px solid #adb5bd;
+  border-radius: 4px;
+  text-wrap: nowrap;
+  margin-block: 0.5rem;
+  cursor: pointer;
+}
+
+.create-ticket-form .file-upload-button-par {
+  font-family: "Open Sans", sans-serif;
+  font-style: italic;
+  font-weight: 400;
+  font-size: 12px;
+  line-height: 16px;
+  color: #5c5f66;
+}
+
+.create-ticket-form .uploadedFileName {
+  color: #1c7ed6;
+  font-size: 12px;
+  padding: 0.5rem;
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+}
+
+.create-ticket-form .remove-file-btn {
+  background: none;
+  border: none;
+  cursor: pointer;
+  padding: 0;
+  display: flex;
+  align-items: center;
+}
+
+.form-actions {
+  display: flex;
+  gap: 1rem;
+  padding: 1rem;
+  margin-top: auto;
+  background: #f5f7f9;
+  border-top: 1px solid #dee2e6;
+  width: 100%;
+}
+.error {
+  color: #ff0000;
+  font-size: 12px;
+  font-weight: 400;
+  font-style: italic;
+}

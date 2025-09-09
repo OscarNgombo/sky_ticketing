@@ -29,51 +29,24 @@
   border: 1px solid #ced4da;
   border-radius: 2px;
   color: #000000;
-  width: 65%;
+  width: 80%;
   margin-block: 0.5rem;
   padding: 1rem;
-}
-
-.create-ticket-form textarea {
-  margin-block: 0;
-  border-top: 0;
-  height: 230px;
-  border-radius: 0 0 2px 2px;
-  resize: none;
 }
 
 .create-ticket-form .textAreaIcons {
   display: flex;
   flex-direction: row;
-  gap: 1.5rem;
+  gap: 1rem;
   align-items: center;
-  justify-content: space-between;
+  flex-wrap: wrap;
   background: white;
   border-radius: 2px 2px 0 0;
   padding: 12px 12px;
-  width: 65%;
+  width: 80%;
   border: 1px solid #ced4da;
 }
 
-.create-ticket-form .textAreaIcons > div {
-  display: flex;
-  flex-direction: row;
-  align-items: flex-start;
-}
-
-.create-ticket-form .textAreaIcons > div > svg {
-  border: 1px solid #ced4da;
-  /* border-radius: 4px 0 0 4px; */
-  padding: 3px;
-  height: 28px;
-  width: 28px;
-}
-.create-ticket-form .textAreaIcons > div > svg:first-child {
-  border-radius: 4px 0 0 4px;
-}
-.create-ticket-form .textAreaIcons > div > svg:last-child {
-  border-radius: 0 4px 4px 0;
-}
 .create-ticket-form .file-upload-button {
   display: flex;
   flex-direction: row;
@@ -126,9 +99,105 @@
   border-top: 1px solid #dee2e6;
   width: 100%;
 }
-.error {
+.create-ticket-form .error {
   color: #ff0000;
   font-size: 12px;
   font-weight: 400;
   font-style: italic;
+  margin-top: -0.25rem;
+  margin-bottom: 0.5rem;
+  height: 16px;
+}
+
+/* Tiptap Styles */
+.tiptap-editor {
+  width: 80%;
+}
+
+.tiptap-editor .ProseMirror {
+  border: 1px solid #ced4da;
+  border-top: none;
+  border-radius: 0 0 2px 2px;
+  padding: 0.5rem 1rem;
+  min-height: 230px;
+  background: #ffffff;
+}
+
+.tiptap-editor .ProseMirror:focus {
+  outline: none;
+}
+
+.textAreaIcons .icon-group {
+  display: flex;
+}
+
+.textAreaIcons button {
+  background: none;
+  border: 1px solid #ced4da;
+  border-left: none;
+  padding: 4px;
+  cursor: pointer;
+  height: 34px;
+  width: 34px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.textAreaIcons .icon-group button:first-of-type {
+  border-left: 1px solid #ced4da;
+  border-radius: 4px 0 0 4px;
+}
+.textAreaIcons .icon-group button:last-of-type {
+  border-left: 1px solid #ced4da;
+  border-radius: 0 4px 4px 0;
+}
+.textAreaIcons button.is-active {
+  background-color: #e9ecef;
+}
+
+/* Tiptap Content Styles */
+.tiptap-editor .ProseMirror h1 {
+  font-size: 2em;
+  font-weight: bold;
+}
+.tiptap-editor .ProseMirror h2 {
+  font-size: 1.5em;
+  font-weight: bold;
+}
+.tiptap-editor .ProseMirror h3 {
+  font-size: 1.25em;
+  font-weight: bold;
+}
+.tiptap-editor .ProseMirror h4 {
+  font-size: 1em;
+  font-weight: bold;
+}
+
+.tiptap-editor .ProseMirror img {
+  max-width: 100%;
+  height: auto;
+}
+
+.video-wrapper {
+  position: relative;
+  padding-bottom: 56.25%;
+  height: 0;
+  overflow: hidden;
+  max-width: 100%;
+}
+.video-wrapper iframe {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+}
+
+.sidenav-collapsed .create-ticket-form input,
+.sidenav-collapsed .create-ticket-form textarea,
+.sidenav-collapsed .create-ticket-form .textAreaIcons,
+.sidenav-collapsed .tiptap-editor {
+  width: 70%;
+  transition: width 0.3s ease-in-out;
 }

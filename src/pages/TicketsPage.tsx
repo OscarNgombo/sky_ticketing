@@ -1,5 +1,5 @@
 import Dropdown from "../components/inputs/Dropdown";
-import React, { useState } from "react";
+import React, { useState, useEffect, useMemo } from "react";
 import MainLayout from "../layouts/MainLayout.tsx";
 import {
   AddIcon,
@@ -11,6 +11,7 @@ import "./TicketsPage.css";
 import Button from "../components/buttons/Button";
 import TicketSummary from "../components/TicketSummary.tsx";
 import { useNavigate } from "react-router-dom";
+import Modal from "../components/modal/Modal.tsx";
 import Table, { type Column } from "../components/table/Table";
 
 interface Ticket {
@@ -21,40 +22,22 @@ interface Ticket {
   date: string;
 }
 
-const tickets: Ticket[] = [
-  {
-    id: "1",
-    subject: "My computer is not turning on",
-    status: "Open",
-    source: "Email",
-    date: "2025-09-06 12:00:00",
-  },
-  {
-    id: "2",
-    subject: "I forgot my password",
-    status: "In Progress",
-    source: "Email",
-    date: "2025-09-05 12:00:00",
-  },
-  {
-    id: "3",
-    subject: "The printer is not working",
-    source: "Email",
-    status: "Closed",
-    date: "2025-09-04 12:00:00",
-  },
-  {
-    id: "4",
-    subject: "The printer is not working",
-    source: "Help Desk System",
-    status: "Closed",
-    date: "2025-09-04 12:00:00",
-  },
-];
+interface StoredTicket {
+  id: number;
+  mainCategory: string;
+  subCategory: string;
+  problem: string;
+  description: string; 
+  files: File[];
+  createdAt: string;
+}
 
 function TicketsPage() {
   const navigate = useNavigate();
   const [filter, setFilter] = useState("");
+  const [tickets, setTickets] = useState<Ticket[]>([]);
+  const [isModalOpen, setIsModalOpen] = useState(false);
+  const [summaryFilter, setSummaryFilter] = useState('all');
 
   const handleCreateTicket = () => {
     navigate("/ticket/new");
@@ -64,6 +47,37 @@ function TicketsPage() {
     setFilter(e.target.value);
     console.log("Selected filter:", e.target.value);
   };
+
+  const handleSummaryFilterChange = (status: string) => {
+    setSummaryFilter(status);
+  };
+
+  useEffect(() => {
+    const storedTicketsData = localStorage.getItem('tickets');
+    if (storedTicketsData) {
+      const parsedTickets: StoredTicket[] = JSON.parse(storedTicketsData);
+
+      const displayTickets = parsedTickets.map(ticket => ({
+        id: ticket.id.toString(),
+        subject: ticket.problem,
+        status: 'Open',
+        source: 'Sky Support Portal',
+        date: new Date(ticket.createdAt).toLocaleString(),
+      }));
+
+      // Sort by most recent first
+      setTickets(displayTickets.sort((a, b) => new Date(b.date).getTime() - new Date(a.date).getTime()));
+    }
+  }, []);
+
+  const filteredTickets = useMemo(() => {
+    if (summaryFilter === 'all') {
+      return tickets;
+    }
+    return tickets.filter(
+      (ticket) => ticket.status.toLowerCase() === summaryFilter
+    );
+  }, [tickets, summaryFilter]);
 
   const ticketStatusOptions = [
     "Apstar SACCO",
@@ -85,7 +99,9 @@ function TicketsPage() {
   ];
 
   const rightNavItems = [
-    <AddIcon />,
+    <div onClick={() => setIsModalOpen(true)} style={{ cursor: 'pointer' }} title="Coming Soon">
+      <AddIcon />
+    </div>,
     <SearchIcon />,
     <Dropdown
       options={ticketStatusOptions}
@@ -115,10 +131,13 @@ function TicketsPage() {
           Add Ticket
         </Button>
       </div>
-      <TicketSummary />
+      <TicketSummary tickets={tickets} onSelectStatus={handleSummaryFilterChange} />
       <div className="ticket-list-container">
-        <Table columns={ticketColumns} data={tickets} />
+        <Table columns={ticketColumns} data={filteredTickets} />
       </div>
+      <Modal isOpen={isModalOpen} onClose={() => setIsModalOpen(false)} title="Feature Update">
+        <p>This feature is coming soon. Stay tuned!</p>
+      </Modal>
     </MainLayout>
   );
 }

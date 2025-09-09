@@ -27,8 +27,8 @@ function TicketPage({handleCreateTicket}: TicketPageProps) {
                 <header>
                     <p>Create Ticket</p>
                 </header>
-                <section>
-                    <CreateTicketForm onSubmit={handleCreateTicket} onCancel={handleCreateTicket} />
+                <section className="create-ticket-section">
+                    <CreateTicketForm onCancel={handleCreateTicket} />
                 </section>
             </div>
         </MainLayout>

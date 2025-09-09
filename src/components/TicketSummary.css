@@ -1,37 +1,86 @@
 .ticket-summary {
-  padding: 1rem;
-  border-right: 2px solid var(--border-color);
-  background: #ffffff;
+    padding: 1rem;
+    border-right: 2px solid var(--border-color);
+    background: #ffffff;
 }
+
 .summary-header {
-  margin-bottom: 20px;
+    margin-bottom: 20px;
+}
+
+.summary-list ul li {
+    transition: background-color 0.2s ease-in-out;
+    border-radius: 4px;
+    padding: 4px 8px;
+    margin: 2px 0;
+    cursor: pointer;
 }
 
 .summary-list ul {
-  list-style: none;
-  padding: 0;
-  margin: 0;
+    list-style: none;
+    padding: 0;
+    margin: 0;
 }
+
 .squareContainer {
-  --container-color: #0f97ac;
-  background-color: var(--container-color);
-  width: 1rem;
-  height: 1rem;
-  border-radius: 4px;
+    --container-color: #0f97ac;
+    background-color: var(--container-color);
+    width: 1rem;
+    height: 1rem;
+    border-radius: 4px;
 }
+
 .leadText {
-  flex: 3;
-  margin-left: 0.5rem;
-  font-family: "Inter";
-  font-style: normal;
-  font-weight: 500;
-  font-size: 14px;
-  line-height: 17px;
-  color: #000000;
+    flex: 3;
+    margin-left: 0.5rem;
+    font-family: "Inter", sans-serif;
+    font-style: normal;
+    font-weight: 500;
+    font-size: 14px;
+    line-height: 17px;
+    color: #000000;
 }
+
 .summary-list li {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  margin-bottom: 10px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 10px;
+}
+
+/* --- Hover and Active States --- */
+
+.summary-item.all:hover,
+.summary-item.all.active {
+    background-color: #f1f3f5;
+}
+
+.summary-item.open:hover,
+.summary-item.open.active {
+    background-color: #ffe8cc;
+}
+
+.summary-item.in-progress:hover,
+.summary-item.in-progress.active {
+    background-color: #dbe4ff;
+}
+
+.summary-item.resolved:hover,
+.summary-item.resolved.active {
+    background-color: #d3f9d8;
+}
+
+.summary-item.closed:hover,
+.summary-item.closed.active {
+    background-color: #c3fae8;
+}
+
+.summary-item.dropped:hover,
+.summary-item.dropped.active {
+    background-color: #ffe3e3;
+}
+
+.summary-item.on-hold:hover,
+.summary-item.on-hold.active {
+    background-color: #e9ecef;
 }

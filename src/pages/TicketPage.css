@@ -4,7 +4,9 @@
     background-color: #ffffff;
     height: 100%;
 }
-
+.ticket-page{
+    grid-column: 2/3;
+}
 .ticketPageMain > header {
     height: 3rem;
     background: #f5f7f9;

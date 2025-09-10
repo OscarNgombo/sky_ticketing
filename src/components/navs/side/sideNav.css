@@ -7,6 +7,7 @@
   width: 200px;
   padding: 2rem;
   transition: all 0.3s ease-in-out;
+  grid-column: 1;
 }
 
 .top-actions {
@@ -58,6 +59,10 @@
 .side-nav.collapsed .side-nav-actions {
   grid-template-columns: 25px;
   justify-content: center;
+}
+.side-nav.collapsed .side-nav-actions:hover {
+  float: left;
+  background-color: var(--primary-color);
 }
 
 .side-nav.collapsed .side-nav-actions p {

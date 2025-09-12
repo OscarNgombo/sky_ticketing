@@ -1,0 +1,89 @@
+.header {
+  justify-content: space-between;
+  align-items: center;
+  background-color: var(--primary-color);
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05);
+  padding-right: 2rem;
+}
+
+.header-left,
+.header-right {
+  display: flex;
+  align-items: center;
+  gap: 1.5rem;
+  height: 100%;
+  margin-block: 0.5rem;
+}
+.header .logo {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background-color: var(--primary-color);
+  height: inherit;
+  width: 200px;
+  transition: width 0.3s ease-in-out;
+  border-width: 0 1px 1px 0;
+  border-style: solid;
+  border-color: #fff;
+}
+
+.header .logo.collapsed {
+  width: 3.3125rem;
+}
+.header-text {
+  color: var(--text-secondary-color);
+  font-size: var(--font-size);
+  font-weight: 600;
+  line-height: 19px;
+  text-wrap: nowrap;
+}
+
+
+.user-type {
+  display: flex;
+  flex-direction: row;
+  justify-content: center;
+  align-items: center;
+  padding: 1px 6px;
+  gap: 4px;
+  border-radius: 2px;
+  border: none;
+}
+.user-type p {
+  font-weight: 700;
+  font-size: var(--user-type-font-size);
+  line-height: var(--user-type-line-height);
+  text-transform: uppercase;
+  flex: none;
+  flex-grow: 0;
+}
+
+.vendor {
+  background: var(--vendor-bg);
+}
+.vendor p {
+  color: var(--vendor-color);
+}
+.vendor:hover {
+  background-color: var(--vendor-hover-bg);
+}
+
+.client {
+  background: var(--client-bg);
+}
+.client p {
+  color: var(--client-color);
+}
+.client:hover {
+  background-color: var(--client-hover-bg);
+}
+
+.support {
+  background: var(--support-bg);
+}
+.support p {
+  color: var(--support-color);
+}
+.support:hover {
+  background-color: var(--support-hover-bg);
+}

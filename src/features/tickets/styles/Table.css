@@ -1,0 +1,165 @@
+.reusable-table {
+  width: 100%;
+  border-collapse: collapse;
+  background-color: #ffffff;
+  border: 1px solid #dee2e6;
+}
+
+.reusable-table th,
+.reusable-table td {
+  padding: 1rem;
+  text-align: left;
+  border-bottom: 1px solid var(--border-color);
+  text-wrap: nowrap;
+}
+
+.reusable-table th {
+  font-family: "Inter";
+  font-style: normal;
+  font-weight: 700;
+  font-size: 14px;
+  line-height: 20px;
+  color: #495057;
+}
+
+.reusable-table tbody tr:hover {
+  background-color: #f6fbfd;
+}
+
+.clickable-row {
+  cursor: pointer;
+}
+.clickable-row:hover {
+  background-color: #eef9fb;
+}
+.clickable-row:focus {
+  outline: 2px solid rgba(20, 77, 90, 0.15);
+  outline-offset: -2px;
+}
+
+.ticket-subject-cell {
+  text-decoration: solid 2px underline #144d5a;
+  color: #134d59;
+  font-weight: 400;
+  line-height: 22px;
+}
+
+.table-container {
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+  gap: 0.75rem;
+  margin: 1rem;
+}
+
+.table-full-window .table-container {
+  height: calc(100vh - 160px);
+  margin: 0.5rem 1rem;
+}
+
+.table-controls {
+  flex: 0 0 auto;
+  display: flex;
+  gap: 0.5rem;
+  align-items: center;
+  padding: 0.5rem;
+  background: #fff;
+  z-index: 2;
+  border-bottom: 1px solid #e9ecef;
+}
+
+.control-active {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+  background: var(--primary-color);
+  color: var(--alternate-text-color);
+  border: 1px solid transparent;
+  padding: 0.25rem 0.5rem;
+  border-radius: 6px;
+}
+.control-active button svg rect {
+  fill: none;
+}
+.control-count {
+  color: #ffffff;
+  font-weight: 700;
+}
+.control-label {
+  background: none;
+  border: none;
+  font-weight: 600;
+  cursor: pointer;
+}
+.control-label svg rect {
+  fill: none;
+}
+.control-cancel {
+  background: none;
+  border: none;
+  padding: 0;
+  display: inline-flex;
+  align-items: center;
+  cursor: pointer;
+}
+
+/* Refresh animation */
+@keyframes spin-clockwise {
+  from {
+    transform: rotate(0deg);
+  }
+  to {
+    transform: rotate(360deg);
+  }
+}
+.refresh-spin {
+  animation: spin-clockwise 800ms linear infinite;
+}
+
+.control-group {
+  display: inline-flex;
+  gap: 0.5rem;
+  align-items: center;
+}
+
+.control-button {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+  background: none;
+  border: 1px solid transparent;
+  padding: 0.4rem 0.6rem;
+  border-radius: 6px;
+  cursor: pointer;
+}
+.control-button svg {
+  display: inline-block;
+  vertical-align: middle;
+}
+
+.control-button.icon-only {
+  margin-bottom: 0px;
+  justify-content: center;
+}
+.control-button.icon-only svg {
+  width: 30px;
+  height: 30px;
+}
+
+.table-scroll {
+  flex: 1 1 auto;
+  overflow: auto;
+}
+
+.reusable-table thead th {
+  position: sticky;
+  top: 0;
+  background: #fff;
+  z-index: 2;
+  border-bottom: 1px solid var(--border-color);
+}
+
+.reusable-table {
+  width: 100%;
+  border-collapse: collapse;
+}

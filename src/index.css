@@ -17,6 +17,18 @@
   --secondary-button-color: #fd7e14;
   --bottom-nav-bg-color: #e0e9eb;
   --border-color: #e2e2e2;
+  /* User type button variables */
+  --user-type-font-size: 9px;
+  --user-type-line-height: 14px;
+  --vendor-bg: #e7f5ff;
+  --vendor-color: #228be6;
+  --vendor-hover-bg: #d0ebff;
+  --client-bg: #fff4e5;
+  --client-color: #fd7e14;
+  --client-hover-bg: #ffebd0;
+  --support-bg: #e6fcf5;
+  --support-color: #12b886;
+  --support-hover-bg: #c3fae8;
 }
 * {
   box-sizing: border-box;
@@ -30,4 +42,9 @@ body {
   background-color: var(--body-color);
   width: 100vw;
   height: 100vh;
+}
+.blurred {
+  filter: blur(4px);
+  pointer-events: none;
+  user-select: none;
 }

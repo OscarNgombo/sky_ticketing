@@ -1,0 +1,92 @@
+.dashboard-page {
+  display: flex;
+  gap: 16px;
+  flex-direction: column;
+  padding: 16px;
+  box-sizing: border-box;
+  height: 100%;
+}
+.dashboard-actions{
+    margin: 1rem;
+    display: flex;
+    justify-content: start; 
+    gap: 1rem;
+}
+.dashboard-stats {
+  display: flex;
+  gap: 12px;
+  align-items: stretch;
+}
+
+.dashboard-grid {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  height: 100%;
+}
+
+.dashboard-recent {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  flex: 1 1 auto;
+  min-height: 0; 
+}
+
+.stat-card {
+  background: #fff;
+  border-radius: 8px;
+  padding: 12px 16px;
+  box-shadow: 0 1px 3px rgba(0,0,0,0.06);
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+}
+
+.stat-card.open {
+  background-color: #ffe8cc; /* matches .summary-item.open */
+}
+
+.stat-card.in-progress {
+  background-color: #dbe4ff; /* matches .summary-item.in-progress */
+}
+
+.stat-card.closed {
+  background-color: #c3fae8; /* matches .summary-item.closed */
+}
+
+.stat-card.assigned {
+  background-color: #f4f6f9; /* neutral/assigned */
+}
+
+.stat-title {
+  font-size: 12px;
+  color: #666;
+}
+
+.stat-value {
+  font-size: 24px;
+  font-weight: 600;
+  margin-top: 6px;
+}
+
+.quick-actions {
+  display: flex;
+  gap: 8px;
+}
+
+.quick-actions .btn {
+  padding: 8px 12px;
+}
+
+.recent-table {
+  margin-top: 12px;
+  flex: 1 1 auto;
+  min-height: 160px;
+}
+
+/* Make sure table-full-window usage will occupy remaining space */
+.table-full-window.dashboard-table {
+  height: calc(100% - 140px);
+}

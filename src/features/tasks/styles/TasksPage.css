@@ -1,0 +1,50 @@
+.tasks-page-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 1rem;
+}
+.table-pagination-footer {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-top: 0.75rem;
+  margin-bottom: 0.5rem;
+  padding: 1rem;
+}
+.people-page {
+  display: grid;
+  flex: 1 1 auto;
+  margin: 0;
+  padding: 0 1rem;
+}
+.table-full-window {
+  overflow: auto;
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+}
+.table-full-window .table-container {
+  height: 100%;
+  margin: 0;
+}
+.table-full-window .table-scroll {
+  flex: 1 1 auto;
+  overflow: auto;
+}
+.table-pagination-footer button {
+  background: var(--primary-color);
+  color: #fff;
+  border: none;
+  padding: 8px 12px;
+  border-radius: 4px;
+  cursor: pointer;
+}
+.table-pagination-footer button:disabled {
+  background: #ccc;
+  color: #666;
+  cursor: not-allowed;
+}
+.table-pagination-footer button:last-of-type {
+  margin-left: 0.5rem;
+}

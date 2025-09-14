@@ -333,7 +333,12 @@ function TicketsPage(props: TicketsPageProps) {
             onRowClick={(row) => {
               try {
                 const encoded = btoa(String(row.id));
-                navigate({ to: `/tickets/${encoded}` });
+                // navigate({ to: `/tickets/${encoded}` });
+                navigate({ to: "/tickets", params: { ticketId: encoded } });
+                navigate({
+                  to: "/tickets/$ticketId/$county",
+                  params: { ticketId: encoded, county: "047" },
+                });
               } catch {
                 // fallback to plain id if encoding fails
                 navigate({ to: `/tickets/${row.id}` });

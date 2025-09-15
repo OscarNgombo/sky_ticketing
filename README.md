@@ -67,3 +67,41 @@ export default tseslint.config([
   },
 ])
 ```
+
+## Package manager: pnpm
+
+This project is configured to use pnpm workspaces.
+
+- Workspace file: `pnpm-workspace.yaml` with `packages: ["."]` (single-package workspace).
+- package.json pins pnpm via Corepack: `"packageManager": "pnpm@10.16.1"`.
+- Installs are enforced to use pnpm with the preinstall script.
+
+Common commands:
+
+```sh
+# enable Corepack (recommended)
+corepack enable
+
+# install deps
+pnpm install
+
+# dev server
+pnpm dev
+
+# typecheck + build
+pnpm build
+
+# preview production build
+pnpm preview
+
+# lint
+pnpm lint
+```
+
+If Corepack cannot download pnpm (e.g. due to network limits), you can install pnpm manually:
+
+```sh
+npm i -g pnpm
+```
+
+Then run the commands above normally.

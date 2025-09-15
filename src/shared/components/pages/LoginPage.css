@@ -18,14 +18,31 @@
     align-items: center;
     justify-content: center;
     background: #ffffff;
+    flex-direction: column;
 }
-
+.login-page-right img{
+    top: 0;
+    position: fixed;
+    right: 0;
+    height: 24px;
+    width: auto;
+    margin-top: 1rem;
+    margin-right: 1rem;
+}
+.login-page-right p{
+    font-size: 2rem;
+    font-weight: 600;
+    margin-bottom: 1rem;
+    background: none;
+    box-shadow: none;
+    color: var(--primary-color);
+}
 /* Toast notification styles */
 .toast-notification {
     position: fixed;
     top: 32px;
     right: 32px;
-    background: #222;
+    background: var(--primary-color);
     color: #fff;
     padding: 14px 28px;
     border-radius: 8px;
@@ -78,7 +95,10 @@
     padding: 1rem 1rem 1rem 0;
     text-align: start;
 }
-
+.username-container{
+    position: relative;
+    width: 100%;
+}
 .login-content input,
 .login-content select {
     border: 1px solid var(--border-color);

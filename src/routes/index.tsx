@@ -1,10 +1,12 @@
-import { createFileRoute } from "@tanstack/react-router";
-import LoginPage from "../shared/components/pages/LoginPage";
+import { createFileRoute, redirect } from "@tanstack/react-router";
+import { isLoggedIn } from "../utils/auth";
 
 export const Route = createFileRoute("/")({
-  component: RouteComponent,
+  beforeLoad: () => {
+    if (isLoggedIn()) {
+      throw redirect({ to: "/tickets" });
+    }
+    throw redirect({ to: "/login", search: {} as any });
+  },
+  component: () => null,
 });
-
-function RouteComponent() {
-  return <LoginPage />;
-}

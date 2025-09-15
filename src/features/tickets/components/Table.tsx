@@ -15,16 +15,28 @@ export interface Column<T> {
   cell?: (value: T[keyof T]) => React.ReactNode;
 }
 
+// Generic filter/sort types keyed to the row type
+export type TableFilter<T> = {
+  field: keyof T;
+  operator: "contains" | "is" | "is_not" | "starts_with" | "ends_with";
+  value: string;
+};
+
+export type TableSort<T> = {
+  field: keyof T;
+  direction: "asc" | "desc";
+};
+
 interface TableProps<T> {
   columns: Column<T>[];
   data: T[];
   showSort?: boolean;
   showFilter?: boolean;
   showRefresh?: boolean;
-  onFilter?: (filters: any[]) => void;
-  onSort?: (sorts: any[]) => void;
-  initialFilters?: any[];
-  initialSorts?: any[];
+  onFilter?: (filters: TableFilter<T>[]) => void;
+  onSort?: (sorts: TableSort<T>[]) => void;
+  initialFilters?: TableFilter<T>[] | { field: string; operator: string; value: string }[];
+  initialSorts?: TableSort<T>[] | { field: string; direction: string }[];
   onRefresh?: () => Promise<void> | void;
   onRowClick?: (row: T) => void;
 }
@@ -61,58 +73,68 @@ const Table = <T extends { id: string | number }>({
   return (
     <div className="table-container">
       <div className="table-controls">
-  <div className="control-group">
-  {showSort && (
-          (activeSortCount && activeSortCount > 0) ? (
-            <div className="control-active">
-              <span className="control-count">{activeSortCount}</span>
-              <button className="control-label" onClick={() => setIsSortModalOpen(true)}>Sort</button>
-              <button className="control-cancel" onClick={() => onSort && onSort([])} title="Clear sorts"><CancelIcon /></button>
-            </div>
-          ) : (
+        <div className="control-group">
+          {showSort && (
+            activeSortCount && activeSortCount > 0 ? (
+              <div className="control-active">
+                <span className="control-count">{activeSortCount}</span>
+                <button className="control-label" onClick={() => setIsSortModalOpen(true)}>
+                  Sort
+                </button>
+                <button
+                  className="control-cancel"
+                  onClick={() => onSort && onSort([] as unknown as TableSort<T>[])}
+                  title="Clear sorts"
+                >
+                  <CancelIcon />
+                </button>
+              </div>
+            ) : (
+              <button onClick={() => setIsSortModalOpen(true)} className="control-button">
+                <SortIcon /> Sort
+              </button>
+            )
+          )}
+          {showFilter && (
+            activeFilterCount && activeFilterCount > 0 ? (
+              <div className="control-active">
+                <span className="control-count">{activeFilterCount}</span>
+                <button className="control-label" onClick={() => setIsFilterModalOpen(true)}>
+                  Filter
+                </button>
+                <button
+                  className="control-cancel"
+                  onClick={() => onFilter && onFilter([] as unknown as TableFilter<T>[])}
+                  title="Clear filters"
+                >
+                  <CancelIcon />
+                </button>
+              </div>
+            ) : (
+              <button onClick={() => setIsFilterModalOpen(true)} className="control-button">
+                <FilterIcon /> Filter
+              </button>
+            )
+          )}
+          {showRefresh && (
             <button
-              onClick={() => setIsSortModalOpen(true)}
-              className="control-button"
-            >
-              <SortIcon /> Sort
-            </button>
-          )
-        )}
-        {showFilter && (
-          (activeFilterCount && activeFilterCount > 0) ? (
-            <div className="control-active">
-              <span className="control-count">{activeFilterCount}</span>
-              <button className="control-label" onClick={() => setIsFilterModalOpen(true)}>Filter</button>
-              <button className="control-cancel" onClick={() => onFilter && onFilter([])} title="Clear filters"><CancelIcon /></button>
-            </div>
-          ) : (
-            <button
-              onClick={() => setIsFilterModalOpen(true)}
-              className="control-button"
-            >
-              <FilterIcon /> Filter
-            </button>
-          )
-        )}
-        {showRefresh && (
-          <button
-            onClick={async () => {
-              setIsRefreshing(true);
-              try {
-                if (onRefresh && typeof onRefresh === "function") {
-                  await onRefresh();
+              onClick={async () => {
+                setIsRefreshing(true);
+                try {
+                  if (onRefresh && typeof onRefresh === "function") {
+                    await onRefresh();
+                  }
+                } finally {
+                  setIsRefreshing(false);
                 }
-              } finally {
-                setIsRefreshing(false);
-              }
-            }}
-            className="control-button icon-only"
-            title="Refresh"
-            aria-label="Refresh table"
-          >
-            <RefreshIcon className={isRefreshing ? 'refresh-spin' : ''} />
-          </button>
-        )}
+              }}
+              className="control-button icon-only"
+              title="Refresh"
+              aria-label="Refresh table"
+            >
+              <RefreshIcon className={isRefreshing ? "refresh-spin" : ""} />
+            </button>
+          )}
         </div>
       </div>
 
@@ -128,10 +150,7 @@ const Table = <T extends { id: string | number }>({
           <tbody>
             {data.length === 0 ? (
               <tr>
-                <td
-                  colSpan={columns.length}
-                  style={{ textAlign: "center", padding: "2rem" }}
-                >
+                <td colSpan={columns.length} style={{ textAlign: "center", padding: "2rem" }}>
                   No tickets
                 </td>
               </tr>
@@ -139,18 +158,17 @@ const Table = <T extends { id: string | number }>({
               data.map((row) => (
                 <tr
                   key={row.id}
-                  className={onRowClick ? 'clickable-row' : undefined}
+                  className={onRowClick ? "clickable-row" : undefined}
                   onClick={(e) => {
-                    // prevent row click if the user clicked an interactive element inside the row
                     const target = e.target as HTMLElement;
-                    if (target && (target.closest('button') || target.closest('a') || target.closest('input'))) return;
+                    if (target && (target.closest("button") || target.closest("a") || target.closest("input"))) return;
                     if (onRowClick) onRowClick(row);
                   }}
-                  role={onRowClick ? 'button' : undefined}
+                  role={onRowClick ? "button" : undefined}
                   tabIndex={onRowClick ? 0 : undefined}
                   onKeyDown={(e) => {
                     if (!onRowClick) return;
-                    if (e.key === 'Enter' || e.key === ' ') {
+                    if (e.key === "Enter" || e.key === " ") {
                       e.preventDefault();
                       onRowClick(row);
                     }
@@ -158,9 +176,7 @@ const Table = <T extends { id: string | number }>({
                 >
                   {columns.map((col) => (
                     <td key={String(col.accessor)}>
-                      {col.cell
-                        ? col.cell(row[col.accessor])
-                        : String(row[col.accessor])}
+                      {col.cell ? col.cell(row[col.accessor]) : String(row[col.accessor])}
                     </td>
                   ))}
                 </tr>
@@ -174,9 +190,17 @@ const Table = <T extends { id: string | number }>({
           isOpen={isFilterModalOpen}
           onClose={() => setIsFilterModalOpen(false)}
           columns={filterableColumns}
-          initialFilters={initialFilters}
-          onApply={onFilter}
-          onClear={() => onFilter([])}
+          initialFilters={initialFilters as unknown as { field: string; operator: string; value: string }[]}
+          onApply={(filters) =>
+            onFilter(
+              (filters || []).map((f) => ({
+                field: f.field as keyof T,
+                operator: f.operator as TableFilter<T>["operator"],
+                value: f.value,
+              }))
+            )
+          }
+          onClear={() => onFilter([] as unknown as TableFilter<T>[])}
         />
       )}
       {showSort && onSort && (
@@ -184,9 +208,16 @@ const Table = <T extends { id: string | number }>({
           isOpen={isSortModalOpen}
           onClose={() => setIsSortModalOpen(false)}
           columns={filterableColumns}
-          initialSorts={initialSorts}
-          onApply={onSort}
-          onClear={() => onSort([])}
+          initialSorts={initialSorts as unknown as { field: string; direction: string }[]}
+          onApply={(sorts) =>
+            onSort(
+              (sorts || []).map((s) => ({
+                field: s.field as keyof T,
+                direction: (s.direction as "asc" | "desc") ?? "asc",
+              }))
+            )
+          }
+          onClear={() => onSort([] as unknown as TableSort<T>[])}
         />
       )}
     </div>

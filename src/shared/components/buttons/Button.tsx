@@ -9,15 +9,14 @@ interface ButtonProps {
 }
 
 function Button({ children, onClick, variant, className }: ButtonProps) {
-  let buttonClass;
-  if (
-    variant?.localeCompare("primary") ||
-    variant?.localeCompare("secondary")
-  ) {
-    buttonClass = `btn btn-${variant} ${className}`;
-  } else {
-    buttonClass = className;
-  }
+  const buttonClass = [
+    "btn",
+    variant ? `btn-${variant}` : "",
+    className ?? "",
+  ]
+    .filter(Boolean)
+    .join(" ");
+
   return (
     <button className={buttonClass} onClick={onClick}>
       {children}

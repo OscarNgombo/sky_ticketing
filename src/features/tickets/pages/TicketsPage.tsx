@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useMemo } from "react";
+import React, { useState, useEffect, useMemo, useRef } from "react";
 import CryptoJS from "crypto-js";
 import "../styles/TicketsPage.css";
 import Dropdown from "../components/Dropdown";
@@ -9,12 +9,13 @@ import {
   UserIcon,
 } from "../../../shared/icons/icons";
 import type { Column } from "../components/Table";
-import Button from "../../../shared/components/buttons/Button";
-import MainLayout from "../shared/layouts/MainLayout";
 import Modal from "../../../shared/components/modal/Modal";
 import Table from "../components/Table";
 import TicketSummary from "../components/TicketSummary";
 import { useNavigate } from "@tanstack/react-router";
+import Button from "../../../shared/components/buttons/Button";
+import { useSetLayout } from "../../../shared/layouts/LayoutContext";
+import { getCurrentUser } from "../../../utils/auth";
 
 interface Ticket {
   id: string;
@@ -45,10 +46,18 @@ interface TicketsPageProps {
 
 function TicketsPage(props: TicketsPageProps) {
   const navigate = useNavigate();
+  const navigateRef = useRef(navigate);
+  useEffect(() => {
+    navigateRef.current = navigate;
+  }, [navigate]);
   const [filter, setFilter] = useState("");
   const [tickets, setTickets] = useState<Ticket[]>([]);
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [summaryFilter, setSummaryFilter] = useState("all");
+
+  const currentUser = props.user ?? getCurrentUser() ?? undefined;
+  const isVendor = (currentUser?.userType || "").toLowerCase() === "vendor";
+
   type Filter = {
     field: keyof Ticket;
     operator: "contains" | "is" | "is_not" | "starts_with" | "ends_with";
@@ -60,6 +69,68 @@ function TicketsPage(props: TicketsPageProps) {
     direction: "asc" | "desc";
   }
   const [sorts, setSorts] = useState<Sort[]>([]);
+
+  const rightNavItems = useMemo(() => {
+    const baseItems: React.ReactNode[] = [
+      <div
+        key="add"
+        onClick={() => navigateRef.current({ to: "/createTicket" })}
+        style={{ cursor: "pointer" }}
+      >
+        <AddIcon />
+      </div>,
+      <div
+        key="search"
+        onClick={() => setIsModalOpen(true)}
+        style={{ cursor: "pointer" }}
+        title="Coming Soon"
+      >
+        <SearchIcon />
+      </div>,
+    ];
+
+    // Vendors get SACCO dropdown filter in the header
+    if (isVendor) {
+      baseItems.push(
+        <Dropdown
+          key="sacco-filter"
+          options={["Apstar SACCO", "Mwalimu SACCO", "Defence SACCO", "Wetu SACCO"]}
+          value={filter}
+          onChange={(e) => setFilter(e.target.value)}
+          placeholder="Apstar SACCO Limited"
+          showIcon={false}
+        />
+      );
+    }
+
+    baseItems.push(
+      <div
+        key="notifications"
+        onClick={() => setIsModalOpen(true)}
+        style={{ cursor: "pointer" }}
+        title="Coming Soon"
+      >
+        <NotificationIcon />
+      </div>,
+      <div
+        key="user"
+        onClick={() => setIsModalOpen(true)}
+        style={{ cursor: "pointer" }}
+        title="Coming Soon"
+      >
+        <UserIcon />
+      </div>
+    );
+
+    return baseItems;
+  }, [filter, isVendor]);
+
+  useSetLayout({
+    leftText: currentUser?.company || "Help Desk",
+    leftButtonText: currentUser?.userType || "Client",
+    rightItems: rightNavItems,
+    mainContentClassName: "tickets-page",
+  });
 
   // Helper: serialize filters/sorts into URL (encode ticket id values using base64)
   const syncUrl = React.useCallback(
@@ -112,15 +183,6 @@ function TicketsPage(props: TicketsPageProps) {
     navigate({ to: "/createTicket" });
   };
 
-  const handleFilterChange = (e: React.ChangeEvent<HTMLSelectElement>) => {
-    setFilter(e.target.value);
-    console.log("Selected filter:", e.target.value);
-  };
-
-  const handleSummaryFilterChange = (status: string) => {
-    setSummaryFilter(status);
-  };
-
   // When filters or sorts change, sync to URL
   useEffect(() => {
     syncUrl(filters, sorts);
@@ -147,10 +209,15 @@ function TicketsPage(props: TicketsPageProps) {
         console.error("Failed to decrypt or parse tickets:", err);
       }
 
-      const displayTickets = parsedTickets.map((ticket) => ({
-        id: ticket.id.toString(),
+      // Role-based visibility: clients only see their company tickets
+      const filteredTickets = !isVendor && currentUser?.company
+        ? parsedTickets.filter((t: any) => (t.company && t.company === currentUser.company) || (typeof t.source === 'string' && t.source.includes(currentUser.company)))
+        : parsedTickets;
+
+      const displayTickets = filteredTickets.map((ticket: any) => ({
+        id: String(ticket.id),
         subject: ticket.problem,
-        status: "Open",
+        status: ticket.status || "Open",
         source: ticket.source,
         date: new Date(ticket.createdAt).toLocaleString(),
       }));
@@ -183,8 +250,7 @@ function TicketsPage(props: TicketsPageProps) {
     if (filters.length > 0) {
       filtered = filtered.filter((ticket) => {
         return filters.every((filter) => {
-          const ticketValue = ticket[filter.field as keyof Ticket];
-          if (typeof ticketValue !== "string") return false;
+          const ticketValue = ticket[filter.field as keyof Ticket] as string;
 
           switch (filter.operator) {
             case "contains":
@@ -230,11 +296,6 @@ function TicketsPage(props: TicketsPageProps) {
     return filtered;
   }, [tickets, summaryFilter, filters, sorts]);
 
-  const ticketStatusOptions = useMemo(
-    () => ["Apstar SACCO", "Mwalimu SACCO", "Defence SACCO", "Wetu SACCO"],
-    []
-  );
-
   const ticketColumns: Column<Ticket>[] = useMemo(
     () => [
       { header: "Ticket ID", accessor: "id" },
@@ -250,110 +311,45 @@ function TicketsPage(props: TicketsPageProps) {
     []
   );
 
-  const rightNavItems = useMemo(
-    () => [
-      <div
-        key="add"
-        onClick={() => navigate({ to: "/createTicket" })}
-        style={{ cursor: "pointer" }}
-      >
-        <AddIcon />
-      </div>,
-      <div
-        key="search"
-        onClick={() => setIsModalOpen(true)}
-        style={{ cursor: "pointer" }}
-        title="Coming Soon"
-      >
-        <SearchIcon />
-      </div>,
-      <Dropdown
-        key="sacco-filter"
-        options={ticketStatusOptions}
-        value={filter}
-        onChange={handleFilterChange}
-        placeholder="Apstar SACCO Limited"
-        showIcon={false}
-      />,
-      <div
-        key="notifications"
-        onClick={() => setIsModalOpen(true)}
-        style={{ cursor: "pointer" }}
-        title="Coming Soon"
-      >
-        <NotificationIcon />
-      </div>,
-      <div
-        key="user"
-        onClick={() => setIsModalOpen(true)}
-        style={{ cursor: "pointer" }}
-        title="Coming Soon"
-      >
-        <UserIcon />
-      </div>,
-    ],
-    [filter, navigate, ticketStatusOptions]
-  );
-
   return (
     <>
-      <MainLayout
-        leftText={props.user?.company || "Help Desk"}
-        leftButtonText={props.user?.userType || "VENDOR"}
-        userType={props.user?.userType || "Vendor"}
-        username={props.user?.username || "Guest"}
-        rightItems={rightNavItems}
-        mainContentClassName="tickets-page"
-      >
-        <div className="ticketSummary">
-          <p>All Tickets</p>
-        </div>
-        <div className="addTicketing">
-          <p>All Tickets</p>
-          <Button onClick={handleCreateTicket} variant="primary">
-            Add Ticket
-          </Button>
-        </div>
-        <TicketSummary
-          tickets={tickets}
-          onSelectStatus={handleSummaryFilterChange}
+      <div className="ticketSummary">
+        <p>All Tickets</p>
+      </div>
+      <div className="addTicketing">
+        <p>All Tickets</p>
+        <Button onClick={handleCreateTicket} variant="primary">
+          Add Ticket
+        </Button>
+      </div>
+      <TicketSummary
+        tickets={tickets}
+        onSelectStatus={setSummaryFilter}
+      />
+      <div className="ticket-list-container">
+        <Table
+          columns={ticketColumns}
+          data={processedTickets}
+          showFilter={true}
+          showSort={true}
+          onFilter={(next) => setFilters(next)}
+          onSort={(next) => setSorts(next)}
+          initialFilters={filters}
+          initialSorts={sorts}
+          showRefresh={true}
+          onRefresh={handleRefresh}
+          onRowClick={(row) => {
+            navigate({ to: "/tickets/$ticketId", params: { ticketId: String(row.id) } });
+          }}
         />
-        <div className="ticket-list-container">
-          <Table
-            columns={ticketColumns}
-            data={processedTickets}
-            showFilter={true}
-            showSort={true}
-            onFilter={setFilters}
-            onSort={setSorts}
-            initialFilters={filters}
-            initialSorts={sorts}
-            showRefresh={true}
-            onRefresh={handleRefresh}
-            onRowClick={(row) => {
-              try {
-                const encoded = btoa(String(row.id));
-                // navigate({ to: `/tickets/${encoded}` });
-                navigate({ to: "/tickets", params: { ticketId: encoded } });
-                navigate({
-                  to: "/tickets/$ticketId/$county",
-                  params: { ticketId: encoded, county: "047" },
-                });
-              } catch {
-                // fallback to plain id if encoding fails
-                navigate({ to: `/tickets/${row.id}` });
-              }
-            }}
-          />
-        </div>
-        <Modal
-          isOpen={isModalOpen}
-          onClose={() => setIsModalOpen(false)}
-          title="Feature Update"
-        >
-          <p>This feature is coming soon. Stay tuned!</p>
-        </Modal>
-      </MainLayout>
+      </div>
+      <Modal
+        isOpen={isModalOpen}
+        onClose={() => setIsModalOpen(false)}
+        title="Feature Update"
+      >
+        <p>This feature is coming soon. Stay tuned!</p>
+      </Modal>
     </>
   );
 }

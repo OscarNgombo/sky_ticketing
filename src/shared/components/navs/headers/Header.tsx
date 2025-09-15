@@ -1,7 +1,7 @@
 import React from "react";
-import "../../../styles/Header.css";
-import Button from "../../../../../shared/components/buttons/Button";
-import { Logo } from "../../../../../shared/icons/icons";
+import "../../../../features/tickets/styles/Header.css";
+import Button from "../../buttons/Button.tsx";
+import { Logo } from "../../../icons/icons.tsx";
 
 interface HeaderProps {
   leftText: string;

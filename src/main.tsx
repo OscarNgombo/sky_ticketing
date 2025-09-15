@@ -1,5 +1,4 @@
 import React from "react";
-
 import "./index.css";
 import { routeTree } from "./routeTree.gen";
 import { RouterProvider, Router } from "@tanstack/react-router";

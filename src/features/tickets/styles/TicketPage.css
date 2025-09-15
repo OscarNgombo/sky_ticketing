@@ -39,6 +39,8 @@
     grid-template-columns: 1fr 420px;
     gap: 24px;
     padding: 24px;
+    overflow-y: auto;
+    max-height: 80vh;
 }
 .ticket-detail-left {
     background: #ffffff;

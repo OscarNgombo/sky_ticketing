@@ -1,7 +1,9 @@
 import {Node, mergeAttributes} from '@tiptap/core';
 
+export type HtmlAttrValue = string | number | boolean | null | undefined;
+
 export interface VideoOptions {
-    HTMLAttributes: Record<string, any>;
+    HTMLAttributes: Record<string, HtmlAttrValue>;
 }
 
 declare module '@tiptap/core' {
@@ -29,7 +31,7 @@ export const VideoExtension = Node.create<VideoOptions>({
     addAttributes() {
         return {
             src: {
-                default: null,
+                default: null as string | null,
             },
         };
     },

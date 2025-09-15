@@ -1,4 +1,4 @@
-import React, { useState, type ChangeEvent, type FocusEvent } from "react";
+import React, { useState, type ChangeEvent, type FocusEvent, useMemo } from "react";
 import CryptoJS from "crypto-js";
 import { Editor, useEditor, EditorContent } from "@tiptap/react";
 import StarterKit from "@tiptap/starter-kit";
@@ -291,8 +291,8 @@ const CreateTicketForm: React.FC<CreateTicketFormProps> = ({
   const [files, setFiles] = useState<File[]>([]);
   const [errors, setErrors] = useState<FormErrors>({});
 
-  const editor = useEditor({
-    extensions: [
+  const extensions = useMemo(
+    () => [
       StarterKit,
       Underline,
       Link.configure({ openOnClick: false }),
@@ -300,6 +300,11 @@ const CreateTicketForm: React.FC<CreateTicketFormProps> = ({
       Image,
       VideoExtension,
     ],
+    []
+  );
+
+  const editor = useEditor({
+    extensions,
     content: formData.description,
     onUpdate: ({ editor }) => {
       const html = editor.getHTML();
@@ -471,7 +476,11 @@ const CreateTicketForm: React.FC<CreateTicketFormProps> = ({
       files: fileObjs,
       createdAt: new Date().toISOString(),
       source: user ? `${user.company} (${user.userType})` : "Unknown",
-    };
+      status: 'Open',
+      company: user?.company || 'Unknown',
+      createdBy: user?.username || 'Unknown',
+      createdByType: user?.userType || 'Client',
+    } as const;
 
     // Decrypt existing tickets
     let existingTickets: Ticket[] = [];

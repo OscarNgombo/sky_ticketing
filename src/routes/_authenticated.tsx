@@ -1,16 +1,40 @@
-import { Outlet, createFileRoute } from "@tanstack/react-router";
-import MainLayout from "../features/tickets/shared/layouts/MainLayout";
+import { Outlet, createFileRoute, redirect } from "@tanstack/react-router";
+import MainLayout from "../shared/layouts/MainLayout";
 import { useEffect, useState } from "react";
 import { decryptData } from "../utils/crypto";
+import { isLoggedIn } from "../utils/auth";
+import { LayoutProvider, useLayout } from "../shared/layouts/LayoutContext";
 
 export const Route = createFileRoute("/_authenticated")({
+  beforeLoad: ({ location }) => {
+    if (!isLoggedIn()) {
+      const returnTo = `${location.pathname}${location.search ?? ""}`;
+      throw redirect({ to: "/login", search: { returnTo } as any });
+    }
+  },
   component: RouteComponent,
 });
 
+function Shell({ user }: { user: { userType: string; username: string } }) {
+  const { layout } = useLayout();
+  return (
+    <MainLayout
+      leftText={layout.leftText}
+      leftButtonText={layout.leftButtonText}
+      userType={user.userType}
+      username={user.username}
+      rightItems={layout.rightItems}
+      mainContentClassName={layout.mainContentClassName}
+    >
+      <Outlet />
+    </MainLayout>
+  );
+}
+
 function RouteComponent() {
   const [user, setUser] = useState({
-    userType: "Admin",
-    username: "John Doe",
+    userType: "Client",
+    username: "User",
   });
 
   useEffect(() => {
@@ -28,24 +52,9 @@ function RouteComponent() {
     }
   }, []);
 
-  const rightItems = [
-    <a key="1" href="#">
-      Item 1
-    </a>,
-    <a key="2" href="#">
-      Item 2
-    </a>,
-  ];
-
   return (
-    <MainLayout
-      leftText="Sky Ticketing"
-      leftButtonText="New Ticket"
-      userType={user.userType}
-      username={user.username}
-      rightItems={rightItems}
-    >
-      <Outlet />
-    </MainLayout>
+    <LayoutProvider>
+      <Shell user={user} />
+    </LayoutProvider>
   );
 }

@@ -3,13 +3,14 @@ import MainLayout from "../shared/layouts/MainLayout";
 import { useEffect, useState } from "react";
 import { decryptData } from "../utils/crypto";
 import { isLoggedIn } from "../utils/auth";
-import { LayoutProvider, useLayout } from "../shared/layouts/LayoutContext";
+import { LayoutProvider } from "../shared/layouts/LayoutContext";
+import { useLayout } from "../shared/layouts/useLayout";
 
 export const Route = createFileRoute("/_authenticated")({
   beforeLoad: ({ location }) => {
     if (!isLoggedIn()) {
       const returnTo = `${location.pathname}${location.search ?? ""}`;
-      throw redirect({ to: "/login", search: { returnTo } as any });
+      throw redirect({ to: "/login", search: { returnTo } });
     }
   },
   component: RouteComponent,

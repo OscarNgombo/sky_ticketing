@@ -33,3 +33,31 @@ export function logout(): void {
     // ignore
   }
 }
+
+/**
+ * Encodes a ticket ID for URL safety using base64 and URI encoding
+ * @param ticketId - The ticket ID to encode
+ * @returns The encoded ticket ID safe for URL parameters
+ */
+export function encodeTicketId(ticketId: string | number): string {
+  return encodeURIComponent(btoa(String(ticketId)))
+}
+
+/**
+ * Decodes a ticket ID from URL parameter
+ * @param encodedTicketId - The encoded ticket ID from URL
+ * @returns The original ticket ID
+ */
+export function decodeTicketId(encodedTicketId: string): string {
+  try {
+    const decodedUri = decodeURIComponent(String(encodedTicketId))
+    try {
+      const decodedBase64 = atob(decodedUri)
+      return decodedBase64 || decodedUri
+    } catch {
+      return decodedUri
+    }
+  } catch {
+    return String(encodedTicketId)
+  }
+}

@@ -6,7 +6,7 @@ export const Route = createFileRoute("/")({
     if (isLoggedIn()) {
       throw redirect({ to: "/tickets" });
     }
-    throw redirect({ to: "/login", search: {} as any });
+    throw redirect({ to: "/login", search: { returnTo: location.pathname } });
   },
   component: () => null,
 });

@@ -6,19 +6,22 @@ interface ButtonProps {
   onClick?: () => void;
   variant?: "primary" | "secondary";
   className?: string;
+  disabled?: boolean;
 }
 
-function Button({ children, onClick, variant, className }: ButtonProps) {
-  const buttonClass = [
-    "btn",
-    variant ? `btn-${variant}` : "",
-    className ?? "",
-  ]
+function Button({
+  children,
+  onClick,
+  variant,
+  className,
+  disabled,
+}: ButtonProps) {
+  const buttonClass = ["btn", variant ? `btn-${variant}` : "", className ?? ""]
     .filter(Boolean)
     .join(" ");
 
   return (
-    <button className={buttonClass} onClick={onClick}>
+    <button className={buttonClass} onClick={onClick} disabled={disabled}>
       {children}
     </button>
   );

@@ -1,4 +1,9 @@
-import React, { useState, type ChangeEvent, type FocusEvent, useMemo } from "react";
+import React, {
+  useState,
+  type ChangeEvent,
+  type FocusEvent,
+  useMemo,
+} from "react";
 import CryptoJS from "crypto-js";
 import { Editor, useEditor, EditorContent } from "@tiptap/react";
 import StarterKit from "@tiptap/starter-kit";
@@ -77,7 +82,7 @@ const MenuBar: React.FC<{ editor: Editor | null }> = ({ editor }) => {
     const url = window.prompt("Enter YouTube or Vimeo URL");
     if (url) {
       let embedUrl = url;
-      // Super simple URL parser
+      // URL parser
       if (url.includes("youtube.com/watch?v=")) {
         const videoId = url.split("v=")[1]?.split("&")[0];
         if (videoId) embedUrl = `https://www.youtube.com/embed/${videoId}`;
@@ -293,7 +298,10 @@ const CreateTicketForm: React.FC<CreateTicketFormProps> = ({
 
   const extensions = useMemo(
     () => [
-      StarterKit,
+      StarterKit.configure({
+        // Disable default link extension to avoid conflicts
+        link: false,
+      }),
       Underline,
       Link.configure({ openOnClick: false }),
       TextAlign.configure({ types: ["heading", "paragraph"] }),
@@ -476,10 +484,10 @@ const CreateTicketForm: React.FC<CreateTicketFormProps> = ({
       files: fileObjs,
       createdAt: new Date().toISOString(),
       source: user ? `${user.company} (${user.userType})` : "Unknown",
-      status: 'Open',
-      company: user?.company || 'Unknown',
-      createdBy: user?.username || 'Unknown',
-      createdByType: user?.userType || 'Client',
+      status: "Open",
+      company: user?.company || "Unknown",
+      createdBy: user?.username || "Unknown",
+      createdByType: user?.userType || "Client",
     } as const;
 
     // Decrypt existing tickets

@@ -8,7 +8,7 @@ import {
 } from "../../../shared/icons/icons";
 import Dropdown from "../components/Dropdown";
 import "../styles/TicketPage.css";
-import { useSetLayout } from "../../../shared/layouts/LayoutContext";
+import { useSetLayout } from "../../../shared/layouts/useSetLayout";
 import { getCurrentUser } from "../../../utils/auth";
 import { useNavigate } from "@tanstack/react-router";
 

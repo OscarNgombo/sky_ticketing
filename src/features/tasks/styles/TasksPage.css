@@ -4,6 +4,7 @@
   align-items: center;
   padding: 1rem;
 }
+
 .table-pagination-footer {
   display: flex;
   justify-content: space-between;
@@ -12,11 +13,20 @@
   margin-bottom: 0.5rem;
   padding: 1rem;
 }
+.assigned-tickets-list {
+  max-height: 150px;
+  overflow-y: auto;
+  margin-inline: 1rem;
+}
 .people-page {
   display: grid;
   flex: 1 1 auto;
   margin: 0;
   padding: 0 1rem;
+}
+.people-page .reusable-modal-content svg {
+  height: 24px;
+  width: 24px;
 }
 .table-full-window {
   overflow: auto;
@@ -24,14 +34,12 @@
   display: flex;
   flex-direction: column;
 }
-.table-full-window .table-container {
-  height: 100%;
-  margin: 0;
-}
+
 .table-full-window .table-scroll {
   flex: 1 1 auto;
   overflow: auto;
 }
+
 .table-pagination-footer button {
   background: var(--primary-color);
   color: #fff;
@@ -40,11 +48,36 @@
   border-radius: 4px;
   cursor: pointer;
 }
+
 .table-pagination-footer button:disabled {
   background: #ccc;
   color: #666;
   cursor: not-allowed;
 }
+
 .table-pagination-footer button:last-of-type {
   margin-left: 0.5rem;
+}
+.assign-ticket-row {
+  display: flex;
+  gap: 8px;
+  align-items: center;
+  margin-bottom: 12px;
+}
+
+/* Availability status row styling */
+.person-row-available {
+  background-color: #f7fcfd !important;
+}
+
+.person-row-busy {
+  background-color: #fef2f2 !important;
+}
+
+.person-row-available:hover {
+  background-color: #e6f7ff !important;
+}
+
+.person-row-busy:hover {
+  background-color: #fee2e2 !important;
 }

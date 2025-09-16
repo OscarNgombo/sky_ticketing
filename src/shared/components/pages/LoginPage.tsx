@@ -267,7 +267,7 @@ const LoginPage: React.FC<LoginPageProps> = ({returnTo}) => {
                         <div className="toast-notification">{toast.message}</div>
                     )}
                     <label htmlFor="username">Username/Email</label>
-                    <div className={"username-container"}>
+                    <div className={"input-container"}>
                         <input
                             name="username"
                             type="text"
@@ -276,16 +276,9 @@ const LoginPage: React.FC<LoginPageProps> = ({returnTo}) => {
                             onChange={handleChange}
                             onBlur={handleBlur}
                             className={errors.username ? "input-error" : ""}
-                            style={{paddingRight: "2.5rem"}}
                         />
                         <span
                             className={errors.username ? "info-icon error" : "info-icon"}
-                            style={{
-                                position: "absolute",
-                                right: 8,
-                                top: "50%",
-                                transform: "translateY(-50%)",
-                            }}
                         >
               <InfoIcon/>
             </span>
@@ -295,7 +288,7 @@ const LoginPage: React.FC<LoginPageProps> = ({returnTo}) => {
                     )}
 
                     <label htmlFor="password">Password</label>
-                    <div style={{position: "relative"}}>
+                    <div className={"input-container"}>
                         <input
                             name="password"
                             type="password"
@@ -303,17 +296,12 @@ const LoginPage: React.FC<LoginPageProps> = ({returnTo}) => {
                             value={form.password}
                             onChange={handleChange}
                             onBlur={handleBlur}
+                            autoComplete={"off"}
                             className={errors.password ? "input-error" : ""}
-                            style={{paddingRight: "2.5rem"}}
+
                         />
                         <span
                             className={errors.username ? "info-icon error" : "info-icon"}
-                            style={{
-                                position: "absolute",
-                                right: 8,
-                                top: "50%",
-                                transform: "translateY(-50%)",
-                            }}
                         >
               <InfoIcon/>
             </span>
@@ -322,7 +310,7 @@ const LoginPage: React.FC<LoginPageProps> = ({returnTo}) => {
                     {isRegistering && (
                         <>
                             <label htmlFor="rePassword">Repeat Password</label>
-                            <div style={{position: "relative"}}>
+                            <div className={"input-container"}>
                                 <input
                                     name="rePassword"
                                     type="password"
@@ -330,17 +318,12 @@ const LoginPage: React.FC<LoginPageProps> = ({returnTo}) => {
                                     value={form.rePassword}
                                     onChange={handleChange}
                                     onBlur={handleBlur}
+                                    autoComplete={"off"}
                                     className={errors.rePassword ? "input-error" : ""}
-                                    style={{paddingRight: "2.5rem"}}
+
                                 />
                                 <span
                                     className={errors.username ? "info-icon error" : "info-icon"}
-                                    style={{
-                                        position: "absolute",
-                                        right: 8,
-                                        top: "50%",
-                                        transform: "translateY(-50%)",
-                                    }}
                                 >
                   <InfoIcon/>
                 </span>
@@ -360,7 +343,7 @@ const LoginPage: React.FC<LoginPageProps> = ({returnTo}) => {
                             </select>
 
                             <label htmlFor="company">Company</label>
-                            <div style={{position: "relative"}}>
+                            <div className={"input-container"}>
                                 <input
                                     name="company"
                                     type="text"
@@ -369,7 +352,6 @@ const LoginPage: React.FC<LoginPageProps> = ({returnTo}) => {
                                     onChange={handleChange}
                                     onBlur={handleBlur}
                                     className={errors.company ? "input-error" : ""}
-                                    style={{paddingRight: "2.5rem"}}
                                 />
                                 <span
                                     className={errors.username ? "info-icon error" : "info-icon"}
@@ -403,18 +385,16 @@ const LoginPage: React.FC<LoginPageProps> = ({returnTo}) => {
                     </Button>
 
                     {/* Forgot/Reset links placed below the action buttons */}
-                    <div style={{ display: 'flex', justifyContent: 'space-between', marginTop: 10 }}>
+                    <div className="forgot-reset-links">
                         <button
                             type="button"
                             onClick={openForgot}
-                            style={{ background: 'none', border: 'none', color: '#144D5A', cursor: 'pointer', textDecoration: 'underline', padding: 0 }}
                         >
                             Forgot password?
                         </button>
                         <button
                             type="button"
                             onClick={openForgot}
-                            style={{ background: 'none', border: 'none', color: '#144D5A', cursor: 'pointer', textDecoration: 'underline', padding: 0 }}
                         >
                             Reset Password
                         </button>
@@ -438,7 +418,7 @@ const LoginPage: React.FC<LoginPageProps> = ({returnTo}) => {
                     </>
                 }
             >
-                <div style={{display: 'flex', flexDirection: 'column', gap: 8}}>
+                <div className={"register-container"}>
                     {forgotError && <div className="error">{forgotError}</div>}
                     <label>Username/Email</label>
                     <input

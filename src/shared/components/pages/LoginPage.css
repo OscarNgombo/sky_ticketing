@@ -20,7 +20,8 @@
     background: #ffffff;
     flex-direction: column;
 }
-.login-page-right img{
+
+.login-page-right img {
     top: 0;
     position: fixed;
     right: 0;
@@ -29,7 +30,8 @@
     margin-top: 1rem;
     margin-right: 1rem;
 }
-.login-page-right p{
+
+.login-page-right p {
     font-size: 2rem;
     font-weight: 600;
     margin-bottom: 1rem;
@@ -37,6 +39,7 @@
     box-shadow: none;
     color: var(--primary-color);
 }
+
 /* Toast notification styles */
 .toast-notification {
     position: fixed;
@@ -89,16 +92,38 @@
     justify-items: inherit;
     align-items: flex-start;
 }
-
+.register-container{
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 0.5rem;
+    margin-top: 1rem;
+}
 .login-content label {
     margin-bottom: 0.5rem;
     padding: 1rem 1rem 1rem 0;
     text-align: start;
+    font-weight: 500;
 }
-.username-container{
+
+.input-container {
     position: relative;
     width: 100%;
 }
+
+.input-container input {
+    padding-right: 2.5rem;
+}
+
+.input-container span {
+    position: absolute;
+    right: 0.75rem;
+    top: 50%;
+    transform: translateY(-50%);
+    font-size: 0.875rem;
+    color: var(--text-primary-color);
+}
+
 .login-content input,
 .login-content select {
     border: 1px solid var(--border-color);
@@ -133,4 +158,21 @@
 .info-icon.error svg {
     display: revert;
     fill: #e03131;
+}
+
+.forgot-reset-links {
+    display: flex;
+    justify-content: space-between;
+    margin-top: 10px;
+    gap: 2rem;
+}
+.forgot-reset-links button{
+    background: none;
+    border: none;
+    color: var(--primary-color);
+    cursor: pointer;
+    padding: 0;
+    font-size: 0.9rem;
+    text-decoration: underline;
+    text-wrap: nowrap;
 }

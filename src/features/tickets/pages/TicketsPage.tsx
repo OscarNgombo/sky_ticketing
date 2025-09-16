@@ -14,8 +14,9 @@ import Table from "../components/Table";
 import TicketSummary from "../components/TicketSummary";
 import { useNavigate } from "@tanstack/react-router";
 import Button from "../../../shared/components/buttons/Button";
-import { useSetLayout } from "../../../shared/layouts/LayoutContext";
+import { useSetLayout } from "../../../shared/layouts/useSetLayout";
 import { getCurrentUser } from "../../../utils/auth";
+import { encodeTicketId } from "../../../utils/auth";
 
 interface Ticket {
   id: string;
@@ -339,7 +340,9 @@ function TicketsPage(props: TicketsPageProps) {
           showRefresh={true}
           onRefresh={handleRefresh}
           onRowClick={(row) => {
-            navigate({ to: "/tickets/$ticketId", params: { ticketId: String(row.id) } });
+
+            const encodedTicketId = encodeTicketId(row.id);
+            navigate({ to: "/tickets/$ticketId", params: { ticketId: encodedTicketId } });
           }}
         />
       </div>

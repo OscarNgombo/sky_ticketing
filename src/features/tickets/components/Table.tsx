@@ -35,10 +35,13 @@ interface TableProps<T> {
   showRefresh?: boolean;
   onFilter?: (filters: TableFilter<T>[]) => void;
   onSort?: (sorts: TableSort<T>[]) => void;
-  initialFilters?: TableFilter<T>[] | { field: string; operator: string; value: string }[];
+  initialFilters?:
+    | TableFilter<T>[]
+    | { field: string; operator: string; value: string }[];
   initialSorts?: TableSort<T>[] | { field: string; direction: string }[];
   onRefresh?: () => Promise<void> | void;
   onRowClick?: (row: T) => void;
+  getRowClassName?: (row: T) => string | undefined;
 }
 
 const Table = <T extends { id: string | number }>({
@@ -53,6 +56,7 @@ const Table = <T extends { id: string | number }>({
   initialSorts,
   onRefresh,
   onRowClick,
+  getRowClassName,
 }: TableProps<T>) => {
   const [isFilterModalOpen, setIsFilterModalOpen] = useState(false);
   const [isSortModalOpen, setIsSortModalOpen] = useState(false);
@@ -74,48 +78,62 @@ const Table = <T extends { id: string | number }>({
     <div className="table-container">
       <div className="table-controls">
         <div className="control-group">
-          {showSort && (
-            activeSortCount && activeSortCount > 0 ? (
+          {showSort &&
+            (activeSortCount && activeSortCount > 0 ? (
               <div className="control-active">
                 <span className="control-count">{activeSortCount}</span>
-                <button className="control-label" onClick={() => setIsSortModalOpen(true)}>
+                <button
+                  className="control-label"
+                  onClick={() => setIsSortModalOpen(true)}
+                >
                   Sort
                 </button>
                 <button
                   className="control-cancel"
-                  onClick={() => onSort && onSort([] as unknown as TableSort<T>[])}
+                  onClick={() =>
+                    onSort && onSort([] as unknown as TableSort<T>[])
+                  }
                   title="Clear sorts"
                 >
                   <CancelIcon />
                 </button>
               </div>
             ) : (
-              <button onClick={() => setIsSortModalOpen(true)} className="control-button">
+              <button
+                onClick={() => setIsSortModalOpen(true)}
+                className="control-button"
+              >
                 <SortIcon /> Sort
               </button>
-            )
-          )}
-          {showFilter && (
-            activeFilterCount && activeFilterCount > 0 ? (
+            ))}
+          {showFilter &&
+            (activeFilterCount && activeFilterCount > 0 ? (
               <div className="control-active">
                 <span className="control-count">{activeFilterCount}</span>
-                <button className="control-label" onClick={() => setIsFilterModalOpen(true)}>
+                <button
+                  className="control-label"
+                  onClick={() => setIsFilterModalOpen(true)}
+                >
                   Filter
                 </button>
                 <button
                   className="control-cancel"
-                  onClick={() => onFilter && onFilter([] as unknown as TableFilter<T>[])}
+                  onClick={() =>
+                    onFilter && onFilter([] as unknown as TableFilter<T>[])
+                  }
                   title="Clear filters"
                 >
                   <CancelIcon />
                 </button>
               </div>
             ) : (
-              <button onClick={() => setIsFilterModalOpen(true)} className="control-button">
+              <button
+                onClick={() => setIsFilterModalOpen(true)}
+                className="control-button"
+              >
                 <FilterIcon /> Filter
               </button>
-            )
-          )}
+            ))}
           {showRefresh && (
             <button
               onClick={async () => {
@@ -150,37 +168,57 @@ const Table = <T extends { id: string | number }>({
           <tbody>
             {data.length === 0 ? (
               <tr>
-                <td colSpan={columns.length} style={{ textAlign: "center", padding: "2rem" }}>
+                <td
+                  colSpan={columns.length}
+                  style={{ textAlign: "center", padding: "2rem" }}
+                >
                   No tickets
                 </td>
               </tr>
             ) : (
-              data.map((row) => (
-                <tr
-                  key={row.id}
-                  className={onRowClick ? "clickable-row" : undefined}
-                  onClick={(e) => {
-                    const target = e.target as HTMLElement;
-                    if (target && (target.closest("button") || target.closest("a") || target.closest("input"))) return;
-                    if (onRowClick) onRowClick(row);
-                  }}
-                  role={onRowClick ? "button" : undefined}
-                  tabIndex={onRowClick ? 0 : undefined}
-                  onKeyDown={(e) => {
-                    if (!onRowClick) return;
-                    if (e.key === "Enter" || e.key === " ") {
-                      e.preventDefault();
-                      onRowClick(row);
-                    }
-                  }}
-                >
-                  {columns.map((col) => (
-                    <td key={String(col.accessor)}>
-                      {col.cell ? col.cell(row[col.accessor]) : String(row[col.accessor])}
-                    </td>
-                  ))}
-                </tr>
-              ))
+              data.map((row) => {
+                const rowClasses = [
+                  onRowClick ? "clickable-row" : "",
+                  getRowClassName ? getRowClassName(row) : "",
+                ]
+                  .filter(Boolean)
+                  .join(" ");
+
+                return (
+                  <tr
+                    key={row.id}
+                    className={rowClasses || undefined}
+                    onClick={(e) => {
+                      const target = e.target as HTMLElement;
+                      if (
+                        target &&
+                        (target.closest("button") ||
+                          target.closest("a") ||
+                          target.closest("input"))
+                      )
+                        return;
+                      if (onRowClick) onRowClick(row);
+                    }}
+                    role={onRowClick ? "button" : undefined}
+                    tabIndex={onRowClick ? 0 : undefined}
+                    onKeyDown={(e) => {
+                      if (!onRowClick) return;
+                      if (e.key === "Enter" || e.key === " ") {
+                        e.preventDefault();
+                        onRowClick(row);
+                      }
+                    }}
+                  >
+                    {columns.map((col) => (
+                      <td key={String(col.accessor)}>
+                        {col.cell
+                          ? col.cell(row[col.accessor])
+                          : String(row[col.accessor])}
+                      </td>
+                    ))}
+                  </tr>
+                );
+              })
             )}
           </tbody>
         </table>
@@ -190,7 +228,13 @@ const Table = <T extends { id: string | number }>({
           isOpen={isFilterModalOpen}
           onClose={() => setIsFilterModalOpen(false)}
           columns={filterableColumns}
-          initialFilters={initialFilters as unknown as { field: string; operator: string; value: string }[]}
+          initialFilters={
+            initialFilters as unknown as {
+              field: string;
+              operator: string;
+              value: string;
+            }[]
+          }
           onApply={(filters) =>
             onFilter(
               (filters || []).map((f) => ({
@@ -208,7 +252,9 @@ const Table = <T extends { id: string | number }>({
           isOpen={isSortModalOpen}
           onClose={() => setIsSortModalOpen(false)}
           columns={filterableColumns}
-          initialSorts={initialSorts as unknown as { field: string; direction: string }[]}
+          initialSorts={
+            initialSorts as unknown as { field: string; direction: string }[]
+          }
           onApply={(sorts) =>
             onSort(
               (sorts || []).map((s) => ({

@@ -9,8 +9,8 @@ import Dropdown from "../components/Dropdown";
 
 import { useNavigate } from "@tanstack/react-router";
 import { decryptData } from "../../../utils/crypto";
-import Table from "../components/Table";
-import type { Column } from "../components/Table";
+import Table from "../components/table/Table";
+import type { Column } from "../components/table/Table";
 import "../styles/Dashboard.css";
 import Button from "../../../shared/components/buttons/Button";
 import { useSetLayout } from "../../../shared/layouts/useSetLayout";
@@ -197,11 +197,7 @@ function Dashboard({ user }: TicketPageProps) {
       <div className="dashboard-recent">
         <h3>Recent Tickets</h3>
         <div className="recent-table table-full-window dashboard-table">
-          <Table
-            columns={ticketColumns}
-            data={recentTickets}
-            showRefresh={false}
-          />
+          <Table columns={ticketColumns} data={recentTickets} />
         </div>
       </div>
     </div>

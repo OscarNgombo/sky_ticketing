@@ -1,10 +1,10 @@
 import { useEffect, useState, useCallback, useMemo, useRef } from "react";
-import Table from "../../tickets/components/Table";
+import Table from "../../tickets/components/table/Table";
 import type {
   Column,
   TableFilter as TableFilterType,
   TableSort as TableSortType,
-} from "../../tickets/components/Table";
+} from "../../tickets/components/table/Table";
 import { fetchPeople } from "../api";
 import type { ODataFilter } from "../api";
 import { useNavigate } from "@tanstack/react-router";
@@ -285,14 +285,11 @@ export default function TasksPage() {
   }, [loadPage]);
 
   const handleRefresh = async () => {
-    // Reload assignments from storage and then reload the page
     const freshAssignments = loadAssignments();
     setAssignments(freshAssignments);
     await loadPage();
 
-    // If the assignment modal is open, refresh the available tickets
     if (assignOpen && selectedPerson) {
-      // Re-trigger the modal logic to refresh available options
       const assignedTicketIds = getAllAssignedTicketIds();
 
       try {
@@ -366,13 +363,12 @@ export default function TasksPage() {
 
   const onSort = (sorts: TableSort[]) => {
     const converted = (sorts || []).map((s) => ({
-      field: s.field,
-      direction: s.direction,
-    }));
+      field: s.field as string,
+      direction: (s.direction as string) === "desc" ? "desc" : "asc",
+    })) as { field: string; direction: "asc" | "desc" }[];
     setServerSorts(converted);
   };
 
-  // Assignment modal (vendor only)
   const [assignOpen, setAssignOpen] = useState(false);
   const [selectedPerson, setSelectedPerson] = useState<Person | null>(null);
   const [selectedTicketId, setSelectedTicketId] = useState<string>("");
@@ -386,22 +382,18 @@ export default function TasksPage() {
       setSelectedPerson(person);
       setSelectedTicketId("");
 
-      // Get all currently assigned ticket IDs to filter them out
       const assignedTicketIds = getAllAssignedTicketIds();
 
-      // Load available tickets from localStorage using proper crypto utilities
       try {
         const enc = localStorage.getItem("tickets");
         const options: { id: string; label: string }[] = [];
         if (enc) {
           try {
-            // Try to decrypt using our crypto utility
             const decrypted = decryptData(enc);
             if (decrypted) {
               const parsed = JSON.parse(decrypted) as TicketForDropdown[];
               for (const t of parsed) {
                 const id = String(t.id);
-                // Only include tickets that are not already assigned to anyone
                 if (!assignedTicketIds.has(id)) {
                   const label = `#${id} - ${t.problem || "Ticket"}`;
                   options.push({ id, label });
@@ -410,11 +402,9 @@ export default function TasksPage() {
             }
           } catch {
             try {
-              // Fallback: try parsing as plain JSON
               const parsed = JSON.parse(enc || "[]") as TicketForDropdown[];
               for (const t of parsed) {
                 const id = String(t.id);
-                // Only include tickets that are not already assigned to anyone
                 if (!assignedTicketIds.has(id)) {
                   const label = `#${id} - ${t.problem || "Ticket"}`;
                   options.push({ id, label });
@@ -438,7 +428,6 @@ export default function TasksPage() {
   const addAssignment = () => {
     if (!selectedPerson || !selectedTicketId) return;
 
-    // Double-check: ensure ticket is not already assigned to anyone
     const assignedTicketIds = getAllAssignedTicketIds();
     if (assignedTicketIds.has(selectedTicketId)) {
       alert(
@@ -451,7 +440,6 @@ export default function TasksPage() {
     const next = { ...assignments } as AssignmentsMap;
     const current = Array.isArray(next[username]) ? next[username].slice() : [];
 
-    // Check if this person already has this ticket (shouldn't happen with our UI, but safety check)
     if (!current.includes(selectedTicketId)) {
       current.push(selectedTicketId);
     }
@@ -460,19 +448,15 @@ export default function TasksPage() {
     setAssignments(next);
     saveAssignments(next);
 
-    // Clear selection and refresh available options
     setSelectedTicketId("");
 
-    // Refresh the modal to update available tickets list
     const updatedAssignedIds = getAllAssignedTicketIds();
-    updatedAssignedIds.add(selectedTicketId); // Add the ticket we just assigned
+    updatedAssignedIds.add(selectedTicketId);
 
-    // Update available options by filtering out the newly assigned ticket
     setAvailableTicketOptions((prev) =>
       prev.filter((option) => !updatedAssignedIds.has(option.id))
     );
 
-    // Refresh the table data to update availability status
     loadPage();
   };
 
@@ -484,9 +468,7 @@ export default function TasksPage() {
     setAssignments(next);
     saveAssignments(next);
 
-    // Add the removed ticket back to available options if modal is open
     if (assignOpen) {
-      // Load the ticket details from localStorage to add it back to options
       try {
         const enc = localStorage.getItem("tickets");
         if (enc) {
@@ -507,7 +489,6 @@ export default function TasksPage() {
               }
             }
           } catch {
-            // Fallback: try parsing as plain JSON
             const parsed = JSON.parse(enc || "[]") as TicketForDropdown[];
             const ticket = parsed.find((t) => String(t.id) === ticketId);
             if (ticket) {
@@ -522,7 +503,6 @@ export default function TasksPage() {
           }
 
           if (!ticketFound) {
-            // If we can't find ticket details, add it with basic info
             const label = `#${ticketId} - Ticket`;
             setAvailableTicketOptions((prev) =>
               [...prev, { id: ticketId, label }].sort((a, b) =>
@@ -564,9 +544,6 @@ export default function TasksPage() {
         <Table
           columns={columns}
           data={data}
-          showFilter
-          showSort
-          showRefresh
           onFilter={onFilter}
           onSort={onSort}
           initialFilters={parsed.filters ?? []}

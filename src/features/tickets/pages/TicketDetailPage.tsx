@@ -139,7 +139,14 @@ function TicketDetailPage() {
 
   const currentUser = getCurrentUser() ?? undefined;
   const isVendor = (currentUser?.userType || "").toLowerCase() === "vendor";
-  const statusOptions = ["Open", "In Progress", "Closed"];
+  const statusOptions = [
+    "Open",
+    "In Progress",
+    "Resolved",
+    "Closed",
+    "Dropped",
+    "On Hold",
+  ];
 
   const headerRightItems = React.useMemo(() => {
     const items: React.ReactNode[] = [

@@ -219,11 +219,6 @@
   border-radius: 4px;
   margin-block-end: 0.5rem;
 }
-.table-controls {
-  display: flex;
-  gap: 1rem;
-  justify-content: end;
-}
 .control-button:hover {
   opacity: 0.8;
 }

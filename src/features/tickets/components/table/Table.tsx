@@ -1,30 +1,30 @@
-import React, { useState, useEffect } from "react";
-import "../styles/Table.css";
+import React, { useEffect } from "react";
+import "../../styles/Table.css";
 import {
   FilterIcon,
   SortIcon,
   RefreshIcon,
   CancelIcon,
-} from "../../../shared/icons/TableIcons";
-import FilterModal from "../../../shared/components/table/Filter";
-import SortModal from "../../../shared/components/table/Sort";
+} from "../../../../shared/icons/TableIcons";
+import FilterModal from "../../../../shared/components/table/Filter";
+import SortModal from "../../../../shared/components/table/Sort";
+import { useTableController } from "./useTableController";
 
-export interface Column<T> {
+export type Column<T> = {
   header: string;
   accessor: keyof T;
   cell?: (value: T[keyof T]) => React.ReactNode;
-}
+};
 
-// Generic filter/sort types keyed to the row type
 export type TableFilter<T> = {
   field: keyof T;
-  operator: "contains" | "is" | "is_not" | "starts_with" | "ends_with";
+  operator: string;
   value: string;
 };
 
 export type TableSort<T> = {
   field: keyof T;
-  direction: "asc" | "desc";
+  direction: string;
 };
 
 interface TableProps<T> {
@@ -42,6 +42,32 @@ interface TableProps<T> {
   onRefresh?: () => Promise<void> | void;
   onRowClick?: (row: T) => void;
   getRowClassName?: (row: T) => string | undefined;
+  actions?: {
+    global?: Array<{
+      key: string;
+      label?: string;
+      icon?: React.ReactNode;
+      onClick: () => void | Promise<void>;
+    }>;
+    row?: Array<{
+      key: string;
+      label?: string;
+      icon?: React.ReactNode;
+      onClick: (row: T) => void | Promise<void>;
+      visible?: (row: T) => boolean;
+    }>;
+    custom?: React.ReactNode;
+  };
+  pagination?:
+    | {
+        page: number;
+        pageSize: number;
+        total: number;
+        onPageChange: (p: number) => void;
+        onPageSizeChange?: (s: number) => void;
+      }
+    | false;
+  footer?: React.ReactNode;
 }
 
 const Table = <T extends { id: string | number }>({
@@ -57,28 +83,65 @@ const Table = <T extends { id: string | number }>({
   onRefresh,
   onRowClick,
   getRowClassName,
+  actions,
+  pagination,
+  footer,
 }: TableProps<T>) => {
-  const [isFilterModalOpen, setIsFilterModalOpen] = useState(false);
-  const [isSortModalOpen, setIsSortModalOpen] = useState(false);
-  const [isRefreshing, setIsRefreshing] = useState(false);
-
   useEffect(() => {
     return () => {};
   }, []);
 
-  const filterableColumns = columns.map((col) => ({
-    value: String(col.accessor),
-    text: col.header,
-  }));
+  // compute effective flags: prefer explicit boolean props, otherwise infer from provided handlers
+  const showSortFlag = showSort ?? !!onSort;
+  const showFilterFlag = showFilter ?? !!onFilter;
+  const showRefreshFlag = showRefresh ?? !!onRefresh;
 
-  const activeFilterCount = initialFilters?.length ?? 0;
-  const activeSortCount = initialSorts?.length ?? 0;
+  const {
+    isFilterModalOpen,
+    setIsFilterModalOpen,
+    isSortModalOpen,
+    setIsSortModalOpen,
+    isRefreshing,
+    filterableColumns,
+    activeFilterCount,
+    activeSortCount,
+    refresh,
+  } = useTableController({
+    columns,
+    // cast to any/primitive shapes to satisfy useTableController's expected types
+    initialFilters: initialFilters as unknown as
+      | { field: string; operator: string; value: string }[]
+      | undefined,
+    initialSorts: initialSorts as unknown as
+      | { field: string; direction: string }[]
+      | undefined,
+    onRefresh,
+  });
 
   return (
     <div className="table-container">
       <div className="table-controls">
         <div className="control-group">
-          {showSort &&
+          {/* render global/custom actions if provided */}
+          {actions?.custom}
+          {actions?.global?.map((a) => (
+            <button
+              key={a.key}
+              className="control-button"
+              onClick={async () => {
+                try {
+                  await a.onClick();
+                } catch {
+                  // noop - caller handles errors
+                }
+              }}
+              title={a.label}
+            >
+              {a.icon}
+              {a.label && <span className="action-label">{a.label}</span>}
+            </button>
+          ))}
+          {showSortFlag &&
             (activeSortCount && activeSortCount > 0 ? (
               <div className="control-active">
                 <span className="control-count">{activeSortCount}</span>
@@ -106,7 +169,7 @@ const Table = <T extends { id: string | number }>({
                 <SortIcon /> Sort
               </button>
             ))}
-          {showFilter &&
+          {showFilterFlag &&
             (activeFilterCount && activeFilterCount > 0 ? (
               <div className="control-active">
                 <span className="control-count">{activeFilterCount}</span>
@@ -134,17 +197,10 @@ const Table = <T extends { id: string | number }>({
                 <FilterIcon /> Filter
               </button>
             ))}
-          {showRefresh && (
+          {showRefreshFlag && (
             <button
               onClick={async () => {
-                setIsRefreshing(true);
-                try {
-                  if (onRefresh && typeof onRefresh === "function") {
-                    await onRefresh();
-                  }
-                } finally {
-                  setIsRefreshing(false);
-                }
+                await refresh();
               }}
               className="control-button icon-only"
               title="Refresh"
@@ -216,6 +272,36 @@ const Table = <T extends { id: string | number }>({
                           : String(row[col.accessor])}
                       </td>
                     ))}
+                    {/* row actions cell */}
+                    {actions?.row && (
+                      <td>
+                        <div className="row-actions">
+                          {actions.row.map((ra) => {
+                            if (ra.visible && !ra.visible(row)) return null;
+                            return (
+                              <button
+                                key={ra.key}
+                                className="row-action-button"
+                                onClick={(e) => {
+                                  e.stopPropagation();
+                                  try {
+                                    ra.onClick(row);
+                                  } catch {
+                                    /* noop */
+                                  }
+                                }}
+                                title={ra.label}
+                              >
+                                {ra.icon}
+                                {ra.label && (
+                                  <span className="sr-only">{ra.label}</span>
+                                )}
+                              </button>
+                            );
+                          })}
+                        </div>
+                      </td>
+                    )}
                   </tr>
                 );
               })
@@ -223,7 +309,7 @@ const Table = <T extends { id: string | number }>({
           </tbody>
         </table>
       </div>
-      {showFilter && onFilter && (
+      {showFilterFlag && onFilter && (
         <FilterModal
           isOpen={isFilterModalOpen}
           onClose={() => setIsFilterModalOpen(false)}
@@ -247,7 +333,7 @@ const Table = <T extends { id: string | number }>({
           onClear={() => onFilter([] as unknown as TableFilter<T>[])}
         />
       )}
-      {showSort && onSort && (
+      {showSortFlag && onSort && (
         <SortModal
           isOpen={isSortModalOpen}
           onClose={() => setIsSortModalOpen(false)}
@@ -266,6 +352,46 @@ const Table = <T extends { id: string | number }>({
           onClear={() => onSort([] as unknown as TableSort<T>[])}
         />
       )}
+      {/* footer area: custom footer -> pagination -> nothing */}
+      <div className="table-footer">
+        {footer ? (
+          footer
+        ) : pagination === false ? null : pagination ? (
+          <div className="pagination-controls">
+            <div className="pagination-info">
+              {`Showing page ${pagination.page} — ${pagination.total} items`}
+            </div>
+            <div className="pagination-actions">
+              <button
+                disabled={pagination.page <= 1}
+                onClick={() => pagination.onPageChange(pagination.page - 1)}
+              >
+                Prev
+              </button>
+              <button
+                disabled={
+                  pagination.page * pagination.pageSize >= pagination.total
+                }
+                onClick={() => pagination.onPageChange(pagination.page + 1)}
+              >
+                Next
+              </button>
+              {pagination.onPageSizeChange && (
+                <select
+                  value={pagination.pageSize}
+                  onChange={(e) =>
+                    pagination.onPageSizeChange?.(Number(e.target.value))
+                  }
+                >
+                  <option value={10}>10</option>
+                  <option value={25}>25</option>
+                  <option value={50}>50</option>
+                </select>
+              )}
+            </div>
+          </div>
+        ) : null}
+      </div>
     </div>
   );
 };
